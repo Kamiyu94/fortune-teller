@@ -16,8 +16,10 @@
             <div class="actions">
                 <button id="saveCloudBtn" class="btn-primary" style="display: none;">☁️ 寫入雲端</button>
                 <div class="separator" id="cloudSeparator" style="display: none;"></div>
-                <button id="openSettingsBtn" class="btn-secondary"
-                    style="border: 1px solid var(--accent-gold); margin-right: 5px;">⚙️ 網站設定</button>
+                <button id="openSettingsBtn" class="action-btn" title="網站設定"
+                    style="background: rgba(255,255,255,0.1); border: 1px solid var(--accent-gold); width: 40px; height: 40px; padding: 0; display: inline-flex; justify-content: center; align-items: center; font-size: 1.2rem;">
+                    ⚙️
+                </button>
                 <a href="check-data.html" target="_blank" class="btn-secondary" title="檢查線上檔案內容">🔍 檢查資料</a>
                 <button id="exportBtn" class="btn-secondary">📥 下載檔案</button>
                 <a href="index.html" class="btn-link">返回前台</a>
@@ -197,7 +199,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label>LINE 官方帳號連結 (CTA)</label>
-                    <input type="text" id="configLineUrlModal" placeholder="https://line.me/..." class="modal-input">
+                    <input type="text" id="configLineUrl" placeholder="https://line.me/..." class="modal-input">
                     <small style="color: #888; display:block; margin-top:5px;">使用者點擊「預約老師解盤」時的目標網址。</small>
                 </div>
             </div>

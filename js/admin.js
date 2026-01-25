@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const openSettingsBtn = document.getElementById('openSettingsBtn');
     const closeSettingsBtn = document.querySelector('.settings-close');
     const saveSettingsBtn = document.getElementById('saveSettingsBtn');
-    const settingsLineInput = document.getElementById('configLineUrlModal');
+    const settingsLineInput = document.getElementById('configLineUrl');
 
     if (openSettingsBtn && settingsModal) {
         // Open
