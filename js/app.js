@@ -1,4 +1,5 @@
 // 塔羅牌占卜 App - 主程式
+const TEACHER_LINE_URL = "https://line.me/";
 
 class TarotApp {
     constructor() {
@@ -310,6 +311,25 @@ class TarotApp {
         }).join('');
 
         this.switchScreen(this.resultScreen);
+
+        // Inject Floating CTA Button
+        const existingBtn = document.querySelector('.floating-cta');
+        if (existingBtn) existingBtn.remove();
+
+        const ctaContainer = document.createElement('div');
+        ctaContainer.className = 'floating-cta';
+        ctaContainer.innerHTML = `
+            <button class="line-floating-btn" onclick="window.open('${TEACHER_LINE_URL}', '_blank')">
+                <span class="line-icon">💬</span>
+                <span class="line-text">預約老師解盤</span>
+            </button>
+        `;
+        document.body.appendChild(ctaContainer);
+
+        // Add padding to result content so the button doesn't cover text
+        if (this.resultContent) {
+            this.resultContent.style.paddingBottom = '80px';
+        }
     }
 
     showLoading(show) {
