@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show feedback using a simple color flash on the button
         const btn = document.querySelector('.btn-save');
         const originalText = btn.textContent;
-        btn.textContent = '✅ 已更新 (記住匯出)';
+        btn.textContent = '✅ 已暫存 (請寫入雲端)';
         btn.style.backgroundColor = '#4CAF50';
 
         setTimeout(() => {
@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const originalText = saveCloudBtn.textContent;
-        saveCloudBtn.textContent = '⏳ 上傳中...';
+        saveCloudBtn.textContent = '⏳ 寫入中...';
         saveCloudBtn.disabled = true;
 
         try {
