@@ -22,7 +22,20 @@
             </div>
         </header>
 
-
+        <!-- Site Settings Panel -->
+        <div class="admin-section settings-section"
+            style="background: rgba(42, 26, 62, 0.8); padding: 20px; border-radius: 15px; margin-bottom: 20px; margin-top: 20px; border: 1px solid var(--accent-gold);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h2 style="color: var(--accent-gold); font-size: 1.2rem; margin: 0;">⚙️ 網站設定</h2>
+                <button id="saveSiteConfigBtn" class="btn-primary" style="padding: 6px 15px;">儲存設定</button>
+            </div>
+            <div class="form-group">
+                <label style="display:block; color: #fff; margin-bottom: 5px;">LINE 官方帳號連結 (CTA)</label>
+                <input type="text" id="configLineUrl" placeholder="https://line.me/..."
+                    style="width: 100%; padding: 10px; background: #333; color: #fff; border-radius: 5px; border: 1px solid #555;">
+                <small style="color: #aaa; margin-top: 5px; display: block;">設定後，前台的浮動預約按鈕將連結至此網址。</small>
+            </div>
+        </div>
 
         <!-- Hidden Config Trigger (Backup) -->
         <button id="configBtn" style="display: none;"></button>

@@ -1104,3 +1104,49 @@ body {
         padding: 15px 20px;
     }
 }
+
+/* ========================================
+   FLOATING CTA V2 (Configurable + Safe Layout)
+   ======================================== */
+/* LAYOUT FIX: Prevent Overlap */
+/* Ensure the scrollable content has enough bottom space */
+.result-content {
+    padding-bottom: 140px !important;
+}
+
+/* Floating CTA Override */
+.floating-cta {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: 90%;
+    max-width: 400px;
+    display: flex;
+    justify-content: center;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+    animation: float-up 0.5s ease-out;
+}
+
+.line-floating-btn {
+    background: linear-gradient(135deg, #06C755, #00B900);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    padding: 15px 20px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    box-shadow: 0 0 15px rgba(6, 199, 85, 0.4);
+    transition: transform 0.2s;
+}
+
+.line-floating-btn:active { transform: scale(0.98); }
+
+@keyframes float-up { from { transform: translate(-50%, 100%); } to { transform: translate(-50%, 0); } }

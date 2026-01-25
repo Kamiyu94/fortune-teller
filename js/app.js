@@ -313,23 +313,25 @@ class TarotApp {
         this.switchScreen(this.resultScreen);
 
         // Inject Floating CTA Button
+        // Inject Floating CTA Button
         const existingBtn = document.querySelector('.floating-cta');
         if (existingBtn) existingBtn.remove();
+
+        // Load Config
+        const siteConfig = JSON.parse(localStorage.getItem('siteConfig')) || {};
+        const targetUrl = siteConfig.lineUrl || "https://line.me/";
 
         const ctaContainer = document.createElement('div');
         ctaContainer.className = 'floating-cta';
         ctaContainer.innerHTML = `
-            <button class="line-floating-btn" onclick="window.open('${TEACHER_LINE_URL}', '_blank')">
+            <button class="line-floating-btn" onclick="window.open('${targetUrl}', '_blank')">
                 <span class="line-icon">💬</span>
                 <span class="line-text">預約老師解盤</span>
             </button>
         `;
         document.body.appendChild(ctaContainer);
 
-        // Add padding to result content so the button doesn't cover text
-        if (this.resultContent) {
-            this.resultContent.style.paddingBottom = '80px';
-        }
+        // Padding is now handled by CSS .result-content { padding-bottom: 140px !important; }
     }
 
     showLoading(show) {

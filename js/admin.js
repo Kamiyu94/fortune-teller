@@ -63,6 +63,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load saved config
     loadConfig();
 
+    // --- SITE CONFIG LOGIC (LINE URL) ---
+    const siteConfig = JSON.parse(localStorage.getItem('siteConfig')) || {};
+    const configLineInput = document.getElementById('configLineUrl');
+
+    if (configLineInput) {
+        configLineInput.value = siteConfig.lineUrl || "https://line.me/";
+
+        document.getElementById('saveSiteConfigBtn').addEventListener('click', () => {
+            const newConfig = { ...siteConfig, lineUrl: configLineInput.value.trim() };
+            localStorage.setItem('siteConfig', JSON.stringify(newConfig));
+            alert('✅ 網站設定已儲存！\n前台預約連結已更新。');
+        });
+    }
+
     // Event Listeners
     searchInput.addEventListener('input', (e) => renderCards(cardsData, e.target.value));
 
