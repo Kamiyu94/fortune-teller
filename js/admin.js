@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const originalCardsData = JSON.parse(JSON.stringify(TAROT_CARDS));
     let cardsData = JSON.parse(JSON.stringify(TAROT_CARDS));
     let currentCardId = null;
+    let pendingUploads = new Map(); // Stores File objects: id -> File
 
     // Elements
     const cardList = document.getElementById('cardList');
@@ -36,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Form inputs
     const inputs = {
         symbol: document.getElementById('inputSymbol'),
+        image: document.getElementById('inputImage'),
         name: document.getElementById('inputName'),
         nameEn: document.getElementById('inputNameEn'),
         uprightKeywords: document.getElementById('inputUprightKeywords'),
@@ -44,19 +46,27 @@ document.addEventListener('DOMContentLoaded', () => {
         reversedDesc: document.getElementById('inputReversedDesc'),
     };
 
+    const imagePreviewBox = {
+        emoji: document.getElementById('editSymbolDisplay'),
+        img: document.getElementById('editImageDisplay')
+    };
+
     // Initialize list
-    renderCardList();
+    renderCards(cardsData);
     // Load saved config
     loadConfig();
 
     // Event Listeners
-    searchInput.addEventListener('input', (e) => renderCardList(e.target.value));
+    searchInput.addEventListener('input', (e) => renderCards(cardsData, e.target.value));
 
     // Handle form save
     editForm.addEventListener('submit', (e) => {
         e.preventDefault();
         saveCurrentCard();
     });
+
+    // Handle Image Input
+    inputs.image.addEventListener('change', handleImageSelect);
 
     // Handle Export
     exportBtn.addEventListener('click', exportData);
@@ -92,16 +102,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Core Functions ---
 
-    function renderCardList(filter = '') {
+    function renderCards(data, filter = '') {
+        const scrollTop = cardList.scrollTop;
         cardList.innerHTML = '';
-        cardsData.forEach(card => {
+        data.forEach(card => {
             if (filter && !card.name.includes(filter) && !card.nameEn.toLowerCase().includes(filter.toLowerCase())) {
                 return;
             }
             const el = document.createElement('div');
             el.className = `card-item ${currentCardId === card.id ? 'active' : ''}`;
+
+            // Check for pending upload preview or existing image or symbol
+            let visual = card.itemImageDisplay || (card.image ? `<img src="${card.image}" style="width:24px;height:36px;object-fit:cover;">` : (card.symbol || '🎴'));
+
             el.innerHTML = `
-                <div class="item-symbol">${card.symbol || '🎴'}</div>
+                <div class="item-symbol">${visual}</div>
                 <div class="item-info">
                     <span class="item-name">${card.name}</span>
                     <span class="item-name-en">${card.nameEn}</span>
@@ -110,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
             el.addEventListener('click', () => selectCard(card.id));
             cardList.appendChild(el);
         });
+        cardList.scrollTop = scrollTop;
     }
 
     function selectCard(id) {
@@ -117,14 +133,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const card = cardsData.find(c => c.id === id);
         if (!card) return;
 
-        renderCardList(searchInput.value); // Highlight active
+        renderCards(cardsData, searchInput.value); // Highlight active
         editForm.classList.remove('hidden');
         document.querySelector('.empty-state').style.display = 'none';
 
         // Populate form
         document.getElementById('editCardName').textContent = card.name;
-        document.getElementById('editSymbolDisplay').textContent = card.symbol || '🎴';
         document.getElementById('editCardId').textContent = `ID: ${card.id}`;
+
+        // Reset inputs
+        inputs.image.value = '';
+
+        // Show Image or Symbol
+        if (pendingUploads.has(id)) {
+            // Show pending image
+            const file = pendingUploads.get(id);
+            const url = URL.createObjectURL(file);
+            showPreviewImage(url);
+        } else if (card.image) {
+            showPreviewImage(card.image);
+        } else {
+            showPreviewSymbol(card.symbol || '🎴');
+        }
 
         inputs.symbol.value = card.symbol || '';
         inputs.name.value = card.name;
@@ -135,6 +165,37 @@ document.addEventListener('DOMContentLoaded', () => {
         inputs.reversedDesc.value = card.reversed.desc;
 
         editPanel.scrollTop = 0;
+    }
+
+    function handleImageSelect(e) {
+        if (!e.target.files || !e.target.files[0]) return;
+        const file = e.target.files[0];
+
+        // Create local preview
+        const url = URL.createObjectURL(file);
+        showPreviewImage(url);
+
+        // Store file pending upload
+        pendingUploads.set(currentCardId, file);
+
+        // Update list visual immediately
+        const card = cardsData.find(c => c.id === currentCardId);
+        if (card) {
+            card.itemImageDisplay = `<img src="${url}" style="width:24px;height:36px;object-fit:cover;">`;
+            renderCards(cardsData, searchInput.value);
+        }
+    }
+
+    function showPreviewImage(src) {
+        imagePreviewBox.img.src = src;
+        imagePreviewBox.img.classList.remove('hidden');
+        imagePreviewBox.emoji.classList.add('hidden');
+    }
+
+    function showPreviewSymbol(char) {
+        imagePreviewBox.emoji.textContent = char;
+        imagePreviewBox.emoji.classList.remove('hidden');
+        imagePreviewBox.img.classList.add('hidden');
     }
 
     function saveCurrentCard() {
@@ -159,10 +220,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
+        // Note: We don't save 'image' path here, 
+        // because it's only generated after upload.
+        // But we keep tracking via pendingUploads
+
         // UI Updates
         document.getElementById('editCardName').textContent = cardsData[cardIndex].name;
-        document.getElementById('editSymbolDisplay').textContent = cardsData[cardIndex].symbol;
-        renderCardList(searchInput.value);
+        renderCards(cardsData, searchInput.value);
 
         const btn = document.querySelector('.btn-save');
         const originalText = btn.textContent;
@@ -180,9 +244,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const changes = [];
         cardsData.forEach((card, index) => {
             const original = originalCardsData[index];
-            if (JSON.stringify(card) !== JSON.stringify(original)) {
-                // Determine what changed
+            const hasPendingImage = pendingUploads.has(card.id);
+
+            // Check content diff OR pending image
+            if (JSON.stringify(card) !== JSON.stringify(original) || hasPendingImage) {
                 const diffs = [];
+                if (hasPendingImage) diffs.push('圖片更新');
                 if (card.name !== original.name) diffs.push('名稱');
                 if (card.symbol !== original.symbol) diffs.push('圖示');
                 if (JSON.stringify(card.upright) !== JSON.stringify(original.upright)) diffs.push('正位解釋');
@@ -190,7 +257,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 changes.push({
                     card: card,
-                    diffs: diffs
+                    diffs: diffs,
+                    hasImage: hasPendingImage
                 });
             }
         });
@@ -244,76 +312,61 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Build the final dataset based on selection
-        // Start with original data
-        const finalData = JSON.parse(JSON.stringify(originalCardsData));
-
-        // Apply checked changes
-        checkboxes.forEach(cb => {
-            const id = parseInt(cb.dataset.id);
-            const modifiedCard = cardsData.find(c => c.id === id);
-            const index = finalData.findIndex(c => c.id === id);
-            if (index !== -1 && modifiedCard) {
-                finalData[index] = modifiedCard;
-            }
-        });
-
         const originalText = confirmUploadBtn.textContent;
         confirmUploadBtn.textContent = '⏳ 寫入中...';
         confirmUploadBtn.disabled = true;
 
+        // Build the final dataset based on selection
+        const finalData = JSON.parse(JSON.stringify(originalCardsData));
+
         try {
-            // Generate Content
+            // Process uploads for checked items
+            // We iterate sequentially to avoid rate limits and logic complexity
+            for (const cb of checkboxes) {
+                const id = parseInt(cb.dataset.id);
+                const modifiedCard = cardsData.find(c => c.id === id);
+                let finalCard = { ...modifiedCard };
+
+                // 1. Upload Image If Exists
+                if (pendingUploads.has(id)) {
+                    confirmUploadBtn.textContent = `⏳ 上傳圖片 (ID:${id})...`;
+                    const file = pendingUploads.get(id);
+                    const ext = file.name.split('.').pop();
+                    const fileName = `card_${id}.${ext}`;
+                    const filePath = `images/cards/${fileName}`;
+
+                    // Upload file to GitHub
+                    await uploadFileToGitHub(config, filePath, file);
+
+                    // Update card image path
+                    finalCard.image = filePath;
+
+                    // Clear pending
+                    pendingUploads.delete(id);
+                }
+
+                // Update final data
+                const index = finalData.findIndex(c => c.id === id);
+                if (index !== -1) {
+                    // Remove temporary display prop
+                    delete finalCard.itemImageDisplay;
+                    finalData[index] = finalCard;
+                }
+            }
+
+            confirmUploadBtn.textContent = '⏳ 更新資料庫...';
+
+            // 2. Upload tarot-data.js
             const content = `// 塔羅牌資料庫 - 78張完整塔羅牌（含圖示）
 const TAROT_CARDS = ${JSON.stringify(finalData, null, 2)};
 `;
-            const encoder = new TextEncoder();
-            const data = encoder.encode(content);
-            const base64Content = btoa(String.fromCharCode(...new Uint8Array(data)));
-
-            // API Calls
-            const path = 'js/tarot-data.js';
-            const apiUrl = `https://api.github.com/repos/${config.user}/${config.repo}/contents/${path}`;
-
-            const getResponse = await fetch(apiUrl, {
-                headers: {
-                    'Authorization': `token ${config.token}`,
-                    'Accept': 'application/vnd.github.v3+json'
-                }
-            });
-
-            if (!getResponse.ok) throw new Error('無法取得檔案資訊 (檢查 Token 或 Repo 名稱)');
-            const fileData = await getResponse.json();
-
-            const putResponse = await fetch(apiUrl, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `token ${config.token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    message: `Update tarot data via Admin Panel (${new Date().toLocaleDateString()})`,
-                    content: base64Content,
-                    sha: fileData.sha
-                })
-            });
-
-            if (!putResponse.ok) throw new Error('更新失敗');
+            await uploadFileToGitHub(config, 'js/tarot-data.js', content, true);
 
             reviewModal.classList.add('hidden');
             alert('🎉 更新成功！\nGitHub Pages 將在幾分鐘後自動部署新內容。\n\n您可以使用「🔍 檢查資料」按鈕來確認檔案內容。');
 
-            // Ideally update originalCardsData to reflect the new committed state
-            // So subsequent diffs are accurate
-            // Update originalCardsData ONLY for the committed cards
-            checkboxes.forEach(cb => {
-                const id = parseInt(cb.dataset.id);
-                const modifiedCard = cardsData.find(c => c.id === id);
-                const index = originalCardsData.findIndex(c => c.id === id);
-                if (index !== -1) {
-                    originalCardsData[index] = JSON.parse(JSON.stringify(modifiedCard));
-                }
-            });
+            // Reload page to reset state and clear stale blobs
+            window.location.reload();
 
         } catch (error) {
             console.error(error);
@@ -321,6 +374,65 @@ const TAROT_CARDS = ${JSON.stringify(finalData, null, 2)};
         } finally {
             confirmUploadBtn.textContent = originalText;
             confirmUploadBtn.disabled = false;
+        }
+    }
+
+    async function uploadFileToGitHub(config, path, content, isString = false) {
+        const apiUrl = `https://api.github.com/repos/${config.user}/${config.repo}/contents/${path}`;
+
+        // Check if exists to get SHA
+        let sha = null;
+        try {
+            const resp = await fetch(apiUrl, {
+                headers: {
+                    'Authorization': `token ${config.token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+            if (resp.ok) {
+                const json = await resp.json();
+                sha = json.sha;
+            }
+        } catch (e) { /* ignore */ }
+
+        // Prepare content
+        let base64Content;
+        if (isString) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(content);
+            base64Content = btoa(String.fromCharCode(...new Uint8Array(data)));
+        } else {
+            // Convert File to Base64
+            base64Content = await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const result = reader.result;
+                    // Remove "data:*/*;base64," header
+                    const base64 = result.split(',')[1];
+                    resolve(base64);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(content);
+            });
+        }
+
+        // PUT request
+        const putResp = await fetch(apiUrl, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `token ${config.token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: `Update ${path} via Admin Panel`,
+                content: base64Content,
+                sha: sha
+            })
+        });
+
+        if (!putResp.ok) {
+            const err = await putResp.json();
+            throw new Error(`上傳失敗 (${path}): ${err.message}`);
         }
     }
 
@@ -366,8 +478,6 @@ const TAROT_CARDS = ${JSON.stringify(finalData, null, 2)};
     }
 
     function exportData() {
-        // Build final data same as upload (or just dump all current local changes? Usually download means dump local state)
-        // Let's dump cardsData (current view)
         const fileContent = `// 塔羅牌資料庫 - 78張完整塔羅牌（含圖示）
 const TAROT_CARDS = ${JSON.stringify(cardsData, null, 2)};
 `;

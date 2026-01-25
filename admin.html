@@ -97,57 +97,70 @@
 
                 <form id="editForm" class="edit-form hidden">
                     <div class="form-header">
-                        <div class="card-preview">
-                            <span class="edit-symbol" id="editSymbolDisplay">🎴</span>
-                            <h2 id="editCardName">卡牌名稱</h2>
+                        <div class="form-header">
+                            <div class="card-preview">
+                                <h2 id="editCardName">卡牌名稱</h2>
+                            </div>
+                            <span class="card-id" id="editCardId">ID: 0</span>
                         </div>
-                        <span class="card-id" id="editCardId">ID: 0</span>
-                    </div>
 
-                    <div class="form-group">
-                        <label>卡牌圖示 (Emoji)</label>
-                        <input type="text" id="inputSymbol" class="form-control symbol-input">
-                    </div>
-
-                    <div class="form-row">
                         <div class="form-group">
-                            <label>中文名稱</label>
-                            <input type="text" id="inputName" class="form-control">
+                            <label>卡牌圖像</label>
+                            <div class="image-upload-container">
+                                <div class="current-image" id="imagePreviewBox">
+                                    <span class="placeholder-emoji" id="editSymbolDisplay">🎴</span>
+                                    <img id="editImageDisplay" class="preview-img hidden" src="" alt="Card Image">
+                                </div>
+                                <div class="upload-controls">
+                                    <input type="file" id="inputImage" accept="image/*" class="file-input">
+                                    <div class="symbol-fallback">
+                                        <label>或使用 Emoji 替代</label>
+                                        <input type="text" id="inputSymbol" class="form-control symbol-input"
+                                            placeholder="🎴">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>中文名稱</label>
+                                <input type="text" id="inputName" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>英文名稱</label>
+                                <input type="text" id="inputNameEn" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="divider">⬆️ 正位含意 (Upright)</div>
+
                         <div class="form-group">
-                            <label>英文名稱</label>
-                            <input type="text" id="inputNameEn" class="form-control">
+                            <label>關鍵字 (用逗號 , 分隔)</label>
+                            <input type="text" id="inputUprightKeywords" class="form-control">
                         </div>
-                    </div>
 
-                    <div class="divider">⬆️ 正位含意 (Upright)</div>
+                        <div class="form-group">
+                            <label>詳細解釋</label>
+                            <textarea id="inputUprightDesc" class="form-control" rows="4"></textarea>
+                        </div>
 
-                    <div class="form-group">
-                        <label>關鍵字 (用逗號 , 分隔)</label>
-                        <input type="text" id="inputUprightKeywords" class="form-control">
-                    </div>
+                        <div class="divider">⬇️ 逆位含意 (Reversed)</div>
 
-                    <div class="form-group">
-                        <label>詳細解釋</label>
-                        <textarea id="inputUprightDesc" class="form-control" rows="4"></textarea>
-                    </div>
+                        <div class="form-group">
+                            <label>關鍵字 (用逗號 , 分隔)</label>
+                            <input type="text" id="inputReversedKeywords" class="form-control">
+                        </div>
 
-                    <div class="divider">⬇️ 逆位含意 (Reversed)</div>
+                        <div class="form-group">
+                            <label>詳細解釋</label>
+                            <textarea id="inputReversedDesc" class="form-control" rows="4"></textarea>
+                        </div>
 
-                    <div class="form-group">
-                        <label>關鍵字 (用逗號 , 分隔)</label>
-                        <input type="text" id="inputReversedKeywords" class="form-control">
-                    </div>
-
-                    <div class="form-group">
-                        <label>詳細解釋</label>
-                        <textarea id="inputReversedDesc" class="form-control" rows="4"></textarea>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn-save">💾 暫存修改</button>
-                        <span class="save-hint">修改後請點擊右上角「寫入雲端」更新網站</span>
-                    </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-save">💾 暫存修改</button>
+                            <span class="save-hint">修改後請點擊右上角「寫入雲端」更新網站</span>
+                        </div>
                 </form>
             </div>
         </div>

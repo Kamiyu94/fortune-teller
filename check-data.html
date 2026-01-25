@@ -282,11 +282,15 @@
 
                 if (filter && !searchTarget.includes(filter)) return;
 
+                const visual = card.image
+                    ? `<img src="${card.image}" style="width:50px;height:75px;object-fit:cover;border-radius:4px;">`
+                    : `<div class="card-symbol">${card.symbol || '🎴'}</div>`;
+
                 const el = document.createElement('div');
                 el.className = 'card-item';
                 el.innerHTML = `
                     <div class="card-header">
-                        <div class="card-symbol">${card.symbol || '🎴'}</div>
+                        ${visual}
                         <div class="card-name-group">
                             <div class="card-name">${card.name}</div>
                             <div class="card-id">${card.nameEn} (ID: ${card.id})</div>
