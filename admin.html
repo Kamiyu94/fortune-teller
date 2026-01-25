@@ -16,6 +16,7 @@
             <div class="actions">
                 <button id="saveCloudBtn" class="btn-primary" style="display: none;">☁️ 寫入雲端</button>
                 <div class="separator" id="cloudSeparator" style="display: none;"></div>
+                <a href="check-data.html" target="_blank" class="btn-secondary" title="檢查線上檔案內容">🔍 檢查資料</a>
                 <button id="exportBtn" class="btn-secondary">📥 下載檔案</button>
                 <a href="index.html" class="btn-link">返回前台</a>
             </div>
@@ -51,6 +52,30 @@
                 <div class="modal-actions">
                     <button id="saveConfigBtn" class="btn-primary">儲存設定</button>
                     <button id="closeConfigBtn" class="btn-secondary">關閉</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Modal -->
+        <div id="reviewModal" class="modal hidden">
+            <div class="modal-content review-modal-content">
+                <h2>📋 確認修改內容</h2>
+                <p class="modal-desc">以下是本次修訂的牌卡，請勾選您要同步到雲端的項目：</p>
+
+                <div class="review-header">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="selectAllCheckbox" checked> 全選
+                    </label>
+                    <span id="changeCount">共 0 項修改</span>
+                </div>
+
+                <div class="review-list" id="reviewList">
+                    <!-- JS populate items -->
+                </div>
+
+                <div class="modal-actions">
+                    <button id="confirmUploadBtn" class="btn-primary">確認寫入雲端</button>
+                    <button id="cancelUploadBtn" class="btn-secondary">取消</button>
                 </div>
             </div>
         </div>
