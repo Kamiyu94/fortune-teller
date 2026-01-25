@@ -788,3 +788,57 @@ body {
         height: 60px;
     }
 }
+
+/* ========================================
+   DEBUG MODE - Large Card Preview
+   ======================================== */
+.debug-mode-card {
+    width: 100% !important;
+    max-width: 300px !important;
+    min-height: 400px !important;
+    margin: 0 auto !important;
+    aspect-ratio: 2 / 3.5;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.debug-card-img {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.debug-fallback {
+    font-size: 5rem !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Debug Mode - Mobile Optimization */
+@media (max-width: 600px) {
+    .debug-mode-card {
+        max-width: 85vw !important;
+        min-height: 70vh !important;
+        padding: 30px 20px !important;
+    }
+
+    .debug-card-img {
+        max-height: 50vh;
+    }
+
+    .debug-fallback {
+        font-size: 6rem !important;
+    }
+
+    .debug-mode-card .card-name {
+        font-size: 1.3rem;
+        margin-top: 15px;
+    }
+
+    .debug-mode-card .card-name-en {
+        font-size: 1rem;
+    }
+}

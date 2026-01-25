@@ -439,3 +439,78 @@ class TarotApp {
 document.addEventListener('DOMContentLoaded', () => {
     new TarotApp();
 });
+
+// ========================================
+// STANDALONE DEBUG MODE (Brute Force)
+// Bypasses all game logic for direct card preview
+// ========================================
+window.addEventListener('load', function () {
+    const params = new URLSearchParams(window.location.search);
+    const debugId = params.get('debug_card');
+
+    if (debugId !== null) {
+        console.log("🔍 Debug Mode Active for Card ID:", debugId);
+
+        // 1. Force Screen Switch (Bypass everything)
+        const homeScreen = document.getElementById('homeScreen');
+        const resultScreen = document.getElementById('resultScreen');
+
+        if (homeScreen) homeScreen.classList.remove('active');
+        if (resultScreen) resultScreen.classList.add('active');
+
+        // 2. Find Card Data (TAROT_CARDS is global from tarot-data.js)
+        const card = TAROT_CARDS.find(c => c.id == parseInt(debugId));
+
+        if (card) {
+            console.log("Found card:", card.name);
+
+            // 3. Construct Visual Content (Image Priority)
+            let visualContent = '';
+            if (card.image) {
+                visualContent = `
+                    <img src="${card.image}" class="debug-card-img" alt="${card.name}"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="card-symbol debug-fallback" style="display:none;">${card.symbol || '🎴'}</div>
+                `;
+            } else {
+                visualContent = `<div class="card-symbol">${card.symbol || '🎴'}</div>`;
+            }
+
+            // 4. Inject into Result Cards Container
+            const resultCards = document.getElementById('resultCards');
+            if (resultCards) {
+                resultCards.innerHTML = `
+                    <div class="result-card debug-mode-card">
+                        <div class="card-label">🔍 預覽模式</div>
+                        ${visualContent}
+                        <div class="card-name">${card.name}</div>
+                        <div class="card-name-en">${card.nameEn || ''}</div>
+                    </div>
+                `;
+            }
+
+            // 5. Update Page Title
+            const resultTitle = document.querySelector('.result-title');
+            if (resultTitle) {
+                resultTitle.textContent = '🔍 卡牌預覽';
+            }
+
+            // 6. Hide Meanings Section (Not needed for preview)
+            const resultMeanings = document.getElementById('resultMeanings');
+            if (resultMeanings) {
+                resultMeanings.style.display = 'none';
+            }
+
+            // 7. Update Action Buttons
+            const redrawBtn = document.getElementById('redrawBtn');
+            if (redrawBtn) {
+                redrawBtn.textContent = '🏠 回首頁';
+                redrawBtn.onclick = function () {
+                    window.location.href = 'index.html';
+                };
+            }
+        } else {
+            console.error("Card not found for ID:", debugId);
+        }
+    }
+});
