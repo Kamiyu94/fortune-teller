@@ -1,5 +1,5 @@
 // 塔羅牌占卜 App - 主程式
-const TEACHER_LINE_URL = "https://line.me/";
+const TEACHER_LINE_URL = "https://line.me/R/ti/p/@nuw5707v";
 
 class TarotApp {
     constructor() {
