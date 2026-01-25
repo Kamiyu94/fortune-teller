@@ -479,16 +479,19 @@ body {
     flex-shrink: 0;
 }
 
-/* Remove old reversed card transform */
-/* .result-card.reversed { transfrom: rotate(180deg); } - REMOVED */
+/* Prevent whole card rotation to keep text upright */
+.result-card.reversed {
+    transform: none !important;
+}
 
 .result-card .card-label {
-    font-size: 0.55rem;
+    /* Increased font size for readability */
+    font-size: 0.9rem;
     color: #1a0a2e;
     background: linear-gradient(135deg, #FFD700, #FFA500);
-    padding: 1px 5px;
+    padding: 3px 10px;
     border-radius: 6px;
-    margin-bottom: 2px;
+    margin-bottom: 5px;
     transform: rotate(0deg);
     font-weight: 600;
     flex-shrink: 0;
@@ -518,9 +521,10 @@ body {
 /* .result-card.reversed .card-symbol { transform: rotate(180deg); } - REMOVED */
 
 .result-card .card-name {
-    font-size: 0.7rem;
+    /* Increased font size for readability */
+    font-size: 1.1rem;
     color: #1a0a2e;
-    font-weight: 600;
+    font-weight: 700;
     flex-shrink: 0;
     line-height: 1.2;
     margin-top: auto;
@@ -906,5 +910,39 @@ body {
 
     .debug-mode-card .card-name-en {
         font-size: 1rem;
+    }
+}
+/* ========================================
+   UI FIXES (Append to bottom of style.css)
+   ======================================== */
+
+/* 1. Fix Reversed Card Text Readability */
+/* Rotate text 180deg back so it appears upright on a reversed card */
+.result-card.reversed .card-label,
+.result-card.reversed .card-name,
+.result-card.reversed .card-name-en {
+    transform: rotate(180deg);
+    display: inline-block; /* Necessary for transform to work */
+}
+
+/* 2. Mobile Font Size Boost */
+@media (max-width: 768px) {
+    /* Increase Label Size */
+    .result-card .card-label {
+        font-size: 0.85rem !important; /* Was 0.6rem - too small */
+        padding: 4px 8px;
+        line-height: 1.4;
+    }
+
+    /* Increase Name Size */
+    .result-card .card-name {
+        font-size: 1rem !important; /* Was 0.65rem - too small */
+        margin-top: 8px;
+        font-weight: 700;
+    }
+    
+    /* Ensure Emoji/Symbol is visible */
+    .result-card .card-symbol {
+        font-size: 2rem !important;
     }
 }
