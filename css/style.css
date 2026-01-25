@@ -279,28 +279,37 @@ body {
 }
 
 .card-face {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+    /* CRITICAL: Strict positioning for 3D transform */
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    /* CLIP anything that tries to leave the box */
+    overflow: hidden !important;
     backface-visibility: hidden;
-    border-radius: 12px;
+    -webkit-backface-visibility: hidden;
+    /* Safari fix */
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.9rem;
     text-align: center;
     padding: 10px;
-    overflow: hidden;
-    /* Clip image during flip animation */
 }
 
-/* Ensure images stay within card-face during flip */
-.card-face img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 10px;
+/* FORCE images to fit within card-face - fixes exploding image bug */
+.card-face img,
+.result-card img,
+.card-image {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: cover !important;
     display: block;
+    border-radius: 10px;
 }
 
 .card-back {
@@ -436,28 +445,33 @@ body {
 .result-card {
     background: linear-gradient(135deg, #f8f4e8 0%, #e8e4d8 100%);
     border: 3px solid var(--accent-gold);
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 15px 10px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* Strict sizing constraints */
+    /* CRITICAL: Strict sizing constraints */
     aspect-ratio: 2 / 3.5;
     width: 100%;
     max-width: 180px;
-    position: relative;
-    overflow: hidden;
+    /* Ensure container has coordinate system */
+    position: relative !important;
+    /* CLIP any overflow content */
+    overflow: hidden !important;
+    z-index: 1;
 }
 
-/* Ensure result card images are contained */
+/* FORCE result card images to stay contained */
 .result-card img,
-.result-card .tarot-img {
-    width: 100%;
-    height: auto;
-    max-height: 70%;
-    object-fit: cover;
+.result-card .tarot-img,
+.result-card .card-image {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: 70% !important;
+    object-fit: cover !important;
     border-radius: 8px;
     display: block;
 }
