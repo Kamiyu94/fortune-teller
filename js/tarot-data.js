@@ -46,7 +46,8 @@ const TAROT_CARDS = [
         "缺乏方向"
       ],
       "desc": "可能有人在欺騙你，或你沒有充分發揮潛力。重新審視你的意圖和方法。"
-    }
+    },
+    "image": "images/cards/card_1.jpg"
   },
   {
     "id": 2,
