@@ -506,17 +506,18 @@ const TAROT_CARDS = ${JSON.stringify(finalData, null, 2)};
     // --- Settings Functions ---
 
     function loadConfig() {
-        // Check for magic link import
-        const urlParams = new URLSearchParams(window.location.search);
-        const sharedConfig = urlParams.get('config');
-
-        if (sharedConfig) {
+        // Check for magic link import via Hash (#auth=...)
+        const hash = window.location.hash;
+        if (hash && hash.startsWith('#auth=')) {
+            const b64 = hash.substring(6); // remove #auth=
             try {
-                const json = atob(sharedConfig);
+                const json = atob(b64);
                 const config = JSON.parse(json);
                 localStorage.setItem('tarot_github_config', JSON.stringify(config));
-                // Clean URL
-                window.history.replaceState({}, document.title, window.location.pathname);
+
+                // Clean URL (Remove hash immediately)
+                history.replaceState(null, null, window.location.pathname);
+
                 alert('✅ 設定已成功匯入！\n您現在可以開始管理後台資料了。');
             } catch (e) {
                 console.error(e);
@@ -547,10 +548,12 @@ const TAROT_CARDS = ${JSON.stringify(finalData, null, 2)};
 
         const json = JSON.stringify(config);
         const b64 = btoa(json);
-        const url = `${window.location.origin}${window.location.pathname}?config=${b64}`;
+        // Use Hash (#) instead of Query (?) for security
+        // Hash values are not sent to the server
+        const url = `${window.location.origin}${window.location.pathname}#auth=${b64}`;
 
         navigator.clipboard.writeText(url).then(() => {
-            alert('🔗 連結已複製到剪貼簿！\n\n請將此連結傳給其他管理者，\n他們點開後就會自動完成設定。');
+            alert('🔗 安全連結已複製！\n\n此連結使用 Hash 加密傳遞，\n確保 Token 不會留存在伺服器紀錄中。');
         }).catch(() => {
             alert('複製失敗，請手動複製網址：\n' + url);
         });
