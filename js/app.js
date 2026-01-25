@@ -42,21 +42,17 @@ class TarotApp {
                     isReversed: false
                 }];
 
-                // Force screen switch with direct style manipulation
-                setTimeout(() => {
-                    // Hide other screens explicitly
-                    this.homeScreen.style.display = 'none';
-                    this.homeScreen.classList.remove('active');
-                    this.drawScreen.style.display = 'none';
-                    this.drawScreen.classList.remove('active');
+                // Use native class switching (CSS handles opacity/visibility)
+                // Remove active from all screens first
+                this.homeScreen.classList.remove('active');
+                this.drawScreen.classList.remove('active');
+                this.resultScreen.classList.remove('active');
 
-                    // Show result screen explicitly
-                    this.resultScreen.style.display = 'flex';
-                    this.resultScreen.classList.add('active');
+                // Add active to result screen
+                this.resultScreen.classList.add('active');
 
-                    // Render the result
-                    this.showResult();
-                }, 100);
+                // Render the result immediately
+                this.showResult();
             }
         }
     }
