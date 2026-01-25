@@ -440,17 +440,18 @@ small {
 }
 
 .current-image {
-    width: 100px;
-    height: 150px;
+    width: 200px;
+    height: 350px;
     background: #1a1a1a;
     border: 1px dashed var(--border-color);
-    border-radius: 6px;
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     position: relative;
     transition: border-color 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .current-image.clickable {
@@ -475,13 +476,13 @@ small {
 }
 
 .placeholder-emoji {
-    font-size: 3rem;
+    font-size: 4rem;
 }
 
 .preview-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .preview-img.hidden {
