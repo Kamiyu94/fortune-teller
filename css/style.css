@@ -992,3 +992,52 @@ body {
     justify-content: center !important;
 }
 
+
+/* =========================================
+   FINAL UI POLISH (Overlap & Icons)
+   ========================================= */
+
+/* 1. FIX ACTION BUTTONS OVERLAP (Critical) */
+/* Strategy: The buttons themselves will carry the 'Safe Zone' at their bottom.
+   This forces the scrollable content to end 160px AFTER the buttons. */
+.action-buttons {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 15px !important;
+    width: 100% !important;
+    position: relative !important;
+    z-index: 50 !important;
+    
+    /* Spacing Logic */
+    margin-top: 20px !important;    /* Small gap from cards */
+    padding-bottom: 160px !important; /* HUGE gap below buttons for the CTA to float */
+    margin-bottom: 0 !important;
+}
+
+/* Ensure container allows scrolling past the buttons */
+.result-content, .main-container {
+    padding-bottom: 0 !important; /* Remove old padding to avoid double gaps */
+    overflow-y: auto !important;
+}
+
+/* 2. FIX BLACK ICONS (Nuclear Option) */
+/* Force every part of the SVG to be white */
+.mode-card svg,
+.mode-card svg path,
+.mode-card svg circle,
+.mode-card svg rect,
+.mode-card svg line,
+.mode-card svg polyline {
+    fill: #FFFFFF !important;
+    stroke: #FFFFFF !important;
+    color: #FFFFFF !important;
+}
+
+/* 3. CTA ADJUSTMENT */
+/* Ensure CTA is strictly fixed at bottom */
+.floating-cta {
+    bottom: 30px !important; /* Give it some breathing room from screen edge */
+    z-index: 9999 !important; /* Always on very top */
+}
+
