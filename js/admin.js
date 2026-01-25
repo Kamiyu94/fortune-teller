@@ -34,11 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // GitHub Config Elements
-    const configBtn = document.getElementById('configBtn');
+    const adminTitle = document.getElementById('adminTitle');
     const configModal = document.getElementById('configModal');
     const saveConfigBtn = document.getElementById('saveConfigBtn');
     const closeConfigBtn = document.getElementById('closeConfigBtn');
     const saveCloudBtn = document.getElementById('saveCloudBtn');
+    const cloudSeparator = document.getElementById('cloudSeparator');
 
     // Config Inputs
     const githubToken = document.getElementById('githubToken');
@@ -49,7 +50,24 @@ document.addEventListener('DOMContentLoaded', () => {
     loadConfig();
 
     // Event Listeners for Config & Cloud
-    configBtn.addEventListener('click', () => configModal.classList.remove('hidden'));
+    let titleClickCount = 0;
+    let titleClickTimer = null;
+
+    adminTitle.addEventListener('click', () => {
+        titleClickCount++;
+
+        if (titleClickTimer) clearTimeout(titleClickTimer);
+
+        titleClickTimer = setTimeout(() => {
+            titleClickCount = 0;
+        }, 800);
+
+        if (titleClickCount >= 3) {
+            configModal.classList.remove('hidden');
+            titleClickCount = 0;
+        }
+    });
+
     closeConfigBtn.addEventListener('click', () => configModal.classList.add('hidden'));
     saveConfigBtn.addEventListener('click', saveConfig);
     saveCloudBtn.addEventListener('click', saveToCloud);
@@ -183,8 +201,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const config = JSON.parse(localStorage.getItem('tarot_github_config'));
         if (config && config.token) {
             saveCloudBtn.style.display = 'block';
+            cloudSeparator.style.display = 'block';
         } else {
             saveCloudBtn.style.display = 'none';
+            cloudSeparator.style.display = 'none';
         }
     }
 

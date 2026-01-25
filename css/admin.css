@@ -281,28 +281,20 @@ textarea.form-control {
     width: 1px;
     height: 24px;
     background: var(--border-color);
-    margin: 0 15px;
+    margin: 0 10px;
 }
 
-.btn-icon {
-    background: transparent;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    padding: 5px;
-    border-radius: 4px;
-    transition: background 0.2s;
-}
-
-.btn-icon:hover {
-    background: rgba(255, 255, 255, 0.1);
+.actions {
+    display: flex;
+    align-items: center;
 }
 
 .btn-link {
     color: var(--text-secondary);
     text-decoration: none;
-    margin-left: 15px;
+    margin-left: 10px;
     font-size: 0.9rem;
+    white-space: nowrap;
 }
 
 .btn-link:hover {

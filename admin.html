@@ -12,15 +12,17 @@
 <body>
     <div class="admin-container">
         <header class="admin-header">
-            <h1>🔮 塔羅牌資料管理</h1>
+            <h1 id="adminTitle" style="cursor: pointer; user-select: none;" title="點擊 3 下開啟設定">🔮 塔羅牌資料管理</h1>
             <div class="actions">
-                <button id="configBtn" class="btn-icon" title="設定"><span class="icon">⚙️</span></button>
-                <div class="separator"></div>
-                <button id="saveCloudBtn" class="btn-primary" style="display: none;">☁️ 儲存到雲端 (GitHub)</button>
-                <button id="exportBtn" class="btn-secondary">📤 下載檔案</button>
+                <button id="saveCloudBtn" class="btn-primary" style="display: none;">☁️ 儲存到雲端</button>
+                <div class="separator" id="cloudSeparator" style="display: none;"></div>
+                <button id="exportBtn" class="btn-secondary">📥 下載檔案</button>
                 <a href="index.html" class="btn-link">返回前台</a>
             </div>
         </header>
+
+        <!-- Hidden Config Trigger (Backup) -->
+        <button id="configBtn" style="display: none;"></button>
 
         <!-- Config Modal -->
         <div id="configModal" class="modal hidden">
