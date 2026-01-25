@@ -446,14 +446,14 @@ body {
     background: linear-gradient(135deg, #f8f4e8 0%, #e8e4d8 100%);
     border: 2px solid var(--accent-gold);
     border-radius: 10px;
-    /* MINIMAL padding to maximize image space */
-    padding: 6px 4px 8px 4px;
+    /* Updated Layout: Center alignment with gap */
+    padding: 10px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    gap: 4px;
+    justify-content: center;
+    gap: 15px;
     /* CRITICAL: Strict sizing constraints */
     aspect-ratio: 2 / 3.5;
     width: 100%;
@@ -479,9 +479,8 @@ body {
     flex-shrink: 0;
 }
 
-.result-card.reversed {
-    transform: rotate(180deg);
-}
+/* Remove old reversed card transform */
+/* .result-card.reversed { transfrom: rotate(180deg); } - REMOVED */
 
 .result-card .card-label {
     font-size: 0.55rem;
@@ -495,25 +494,28 @@ body {
     flex-shrink: 0;
 }
 
-.result-card.reversed .card-label {
-    transform: rotate(180deg);
-}
+/* Remove old reversed label transform */
+/* .result-card.reversed .card-label { transform: rotate(180deg); } - REMOVED */
 
 .result-card .card-symbol {
     font-size: 2rem;
     line-height: 1;
-    margin-bottom: 2px;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-grow: 1;
-    max-height: 80%;
+    width: 100%;
     overflow: hidden;
 }
 
-.result-card.reversed .card-symbol {
+/* Image Rotation Logic for Reversed Cards */
+.card-symbol.is-reversed {
     transform: rotate(180deg);
 }
+
+/* Remove old reversed symbol transform */
+/* .result-card.reversed .card-symbol { transform: rotate(180deg); } - REMOVED */
 
 .result-card .card-name {
     font-size: 0.7rem;

@@ -279,7 +279,7 @@ class TarotApp {
             return `
             <div class="result-card ${drawn.isReversed ? 'reversed' : ''}">
                 ${this.mode !== 'single' ? `<div class="card-label">${labels[i]}</div>` : ''}
-                <div class="card-symbol">${visual}</div>
+                <div class="card-symbol ${drawn.isReversed ? 'is-reversed' : ''}">${visual}</div>
                 <div class="card-name">${drawn.card.name}</div>
             </div>`;
         }).join('');
@@ -499,7 +499,7 @@ window.addEventListener('load', function () {
                     return `
                     <div class="result-card ${drawn.isReversed ? 'reversed' : ''}" ${isDebugCard ? 'style="border-color: #e91e63; box-shadow: 0 0 15px rgba(233, 30, 99, 0.5);"' : ''}>
                         <div class="card-label">${labels[i]}</div>
-                        <div class="card-symbol">${visual}</div>
+                        <div class="card-symbol ${drawn.isReversed ? 'is-reversed' : ''}">${visual}</div>
                         <div class="card-name">${drawn.card.name}</div>
                     </div>`;
                 }).join('');
