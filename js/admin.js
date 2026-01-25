@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeConfigBtn = document.getElementById('closeConfigBtn');
     const saveCloudBtn = document.getElementById('saveCloudBtn');
     const cloudSeparator = document.getElementById('cloudSeparator');
+    const shareConfigBtn = document.getElementById('shareConfigBtn');
 
     // Config Inputs
     const githubToken = document.getElementById('githubToken');
@@ -87,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     closeConfigBtn.addEventListener('click', () => configModal.classList.add('hidden'));
     saveConfigBtn.addEventListener('click', saveConfig);
+    shareConfigBtn.addEventListener('click', generateShareLink);
 
     // Cloud Upload Flow
     saveCloudBtn.addEventListener('click', initiateCloudUpload);
@@ -439,6 +441,24 @@ const TAROT_CARDS = ${JSON.stringify(finalData, null, 2)};
     // --- Settings Functions ---
 
     function loadConfig() {
+        // Check for magic link import
+        const urlParams = new URLSearchParams(window.location.search);
+        const sharedConfig = urlParams.get('config');
+
+        if (sharedConfig) {
+            try {
+                const json = atob(sharedConfig);
+                const config = JSON.parse(json);
+                localStorage.setItem('tarot_github_config', JSON.stringify(config));
+                // Clean URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+                alert('✅ 設定已成功匯入！\n您現在可以開始管理後台資料了。');
+            } catch (e) {
+                console.error(e);
+                alert('❌ 設定連結無效或已損毀');
+            }
+        }
+
         const config = JSON.parse(localStorage.getItem('tarot_github_config'));
         if (config) {
             githubToken.value = config.token;
@@ -446,6 +466,29 @@ const TAROT_CARDS = ${JSON.stringify(finalData, null, 2)};
             githubRepo.value = config.repo;
             updateCloudButtonVisibility();
         }
+    }
+
+    function generateShareLink() {
+        const config = {
+            token: githubToken.value.trim(),
+            user: githubUser.value.trim(),
+            repo: githubRepo.value.trim()
+        };
+
+        if (!config.token || !config.user || !config.repo) {
+            alert('請先填寫完整設定並儲存，才能產生分享連結。');
+            return;
+        }
+
+        const json = JSON.stringify(config);
+        const b64 = btoa(json);
+        const url = `${window.location.origin}${window.location.pathname}?config=${b64}`;
+
+        navigator.clipboard.writeText(url).then(() => {
+            alert('🔗 連結已複製到剪貼簿！\n\n請將此連結傳給其他管理者，\n他們點開後就會自動完成設定。');
+        }).catch(() => {
+            alert('複製失敗，請手動複製網址：\n' + url);
+        });
     }
 
     function saveConfig() {
