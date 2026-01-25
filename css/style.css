@@ -734,3 +734,29 @@ body {
         flex-wrap: wrap;
     }
 }
+
+/* Tarot Image Support */
+.tarot-img {
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+}
+
+.tarot-img.result-img {
+    height: 60px;
+    width: auto;
+    max-width: 100%;
+}
+
+.tarot-img.meaning-img {
+    height: 40px;
+    width: auto;
+    vertical-align: middle;
+}
+
+@media (max-width: 600px) {
+    .tarot-img.result-img {
+        height: 45px;
+    }
+}

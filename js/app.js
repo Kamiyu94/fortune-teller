@@ -187,7 +187,13 @@ class TarotApp {
 
         // Update card display
         const cardFront = cardElement.querySelector('.card-front');
-        cardFront.querySelector('.card-symbol').textContent = drawnCard.card.symbol;
+        const symbolEl = cardFront.querySelector('.card-symbol');
+
+        if (drawnCard.card.image) {
+            symbolEl.innerHTML = `<img src="${drawnCard.card.image}" class="tarot-img" alt="${drawnCard.card.name}">`;
+        } else {
+            symbolEl.textContent = drawnCard.card.symbol || '🎴';
+        }
         cardFront.querySelector('.card-name').textContent = drawnCard.card.name;
         cardFront.querySelector('.card-name-en').textContent = drawnCard.card.nameEn;
 
@@ -233,22 +239,31 @@ class TarotApp {
         const labels = this.modeLabels[this.mode];
 
         // Generate result cards HTML
-        this.resultCards.innerHTML = this.drawnCards.map((drawn, i) => `
+        this.resultCards.innerHTML = this.drawnCards.map((drawn, i) => {
+            const visual = drawn.card.image
+                ? `<img src="${drawn.card.image}" class="tarot-img result-img" alt="${drawn.card.name}">`
+                : drawn.card.symbol;
+
+            return `
             <div class="result-card ${drawn.isReversed ? 'reversed' : ''}">
                 ${this.mode !== 'single' ? `<div class="card-label">${labels[i]}</div>` : ''}
-                <div class="card-symbol">${drawn.card.symbol}</div>
+                <div class="card-symbol">${visual}</div>
                 <div class="card-name">${drawn.card.name}</div>
-            </div>
-        `).join('');
+            </div>`;
+        }).join('');
 
         // Generate meanings HTML
         this.resultMeanings.innerHTML = this.drawnCards.map((drawn, i) => {
             const meaning = drawn.isReversed ? drawn.card.reversed : drawn.card.upright;
+            const visual = drawn.card.image
+                ? `<img src="${drawn.card.image}" class="tarot-img meaning-img" alt="${drawn.card.name}">`
+                : drawn.card.symbol;
+
             return `
                 <div class="meaning-card">
                     <div class="meaning-header">
                         ${this.mode !== 'single' ? `<span class="meaning-label">${labels[i]}</span>` : ''}
-                        <span class="meaning-symbol">${drawn.card.symbol}</span>
+                        <span class="meaning-symbol">${visual}</span>
                         <span class="meaning-name">${drawn.card.name}</span>
                         <span class="meaning-position ${drawn.isReversed ? 'reversed' : 'upright'}">
                             ${drawn.isReversed ? '逆位' : '正位'}
