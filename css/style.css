@@ -482,14 +482,21 @@ body {
     margin-bottom: 15px;
 }
 
+/* 分類標題 - 經典星象金風格 */
 .meaning-label {
-    font-size: 0.85rem;
-    color: #FFD700;
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(255, 140, 0, 0.25));
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-weight: 600;
-    border: 1px solid rgba(255, 215, 0, 0.4);
+    font-size: 1rem;
+    color: #2D2D2D;
+    background: linear-gradient(135deg, #C5A059, #B8934A);
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-weight: 700;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+        0 2px 4px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
 }
 
 .meaning-symbol {
@@ -522,16 +529,25 @@ body {
 .meaning-keywords {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 15px;
+    gap: 10px;
+    margin-bottom: 18px;
+    margin-top: 12px;
 }
 
+/* 功能標籤 - 透明底金邊框 */
 .keyword {
-    background: rgba(255, 215, 0, 0.15);
-    color: var(--accent-gold);
-    padding: 5px 12px;
-    border-radius: 15px;
+    background: transparent;
+    color: #E0E0E0;
+    padding: 6px 14px;
+    border-radius: 20px;
     font-size: 0.85rem;
+    border: 1px solid rgba(153, 122, 61, 0.6);
+    transition: all 0.2s ease;
+}
+
+.keyword:hover {
+    background: rgba(197, 160, 89, 0.15);
+    border-color: rgba(197, 160, 89, 0.8);
 }
 
 .meaning-description {
