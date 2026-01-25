@@ -444,14 +444,16 @@ body {
 
 .result-card {
     background: linear-gradient(135deg, #f8f4e8 0%, #e8e4d8 100%);
-    border: 3px solid var(--accent-gold);
+    border: 2px solid var(--accent-gold);
     border-radius: 10px;
-    padding: 15px 10px;
+    /* MINIMAL padding to maximize image space */
+    padding: 6px 4px 8px 4px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    gap: 4px;
     /* CRITICAL: Strict sizing constraints */
     aspect-ratio: 2 / 3.5;
     width: 100%;
@@ -463,17 +465,18 @@ body {
     z-index: 1;
 }
 
-/* FORCE result card images to stay contained */
+/* FORCE result card images to take ~80% of card height */
 .result-card img,
 .result-card .tarot-img,
 .result-card .card-image {
     width: 100% !important;
     height: auto !important;
     max-width: 100% !important;
-    max-height: 70% !important;
+    max-height: 80% !important;
     object-fit: cover !important;
-    border-radius: 8px;
+    border-radius: 6px;
     display: block;
+    flex-shrink: 0;
 }
 
 .result-card.reversed {
@@ -481,14 +484,15 @@ body {
 }
 
 .result-card .card-label {
-    font-size: 0.65rem;
+    font-size: 0.55rem;
     color: #1a0a2e;
     background: linear-gradient(135deg, #FFD700, #FFA500);
-    padding: 2px 6px;
-    border-radius: 8px;
-    margin-bottom: 5px;
+    padding: 1px 5px;
+    border-radius: 6px;
+    margin-bottom: 2px;
     transform: rotate(0deg);
     font-weight: 600;
+    flex-shrink: 0;
 }
 
 .result-card.reversed .card-label {
@@ -496,12 +500,15 @@ body {
 }
 
 .result-card .card-symbol {
-    font-size: 3rem;
+    font-size: 2rem;
     line-height: 1;
-    margin-bottom: 10px;
+    margin-bottom: 2px;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-grow: 1;
+    max-height: 80%;
+    overflow: hidden;
 }
 
 .result-card.reversed .card-symbol {
@@ -509,9 +516,12 @@ body {
 }
 
 .result-card .card-name {
-    font-size: 1rem;
+    font-size: 0.7rem;
     color: #1a0a2e;
-    font-weight: 700;
+    font-weight: 600;
+    flex-shrink: 0;
+    line-height: 1.2;
+    margin-top: auto;
 }
 
 /* Result Meanings */

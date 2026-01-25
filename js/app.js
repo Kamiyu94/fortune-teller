@@ -441,8 +441,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ========================================
-// STANDALONE DEBUG MODE (Brute Force)
-// Bypasses all game logic for direct card preview
+// STANDALONE DEBUG MODE - Mock 5-Card Spread
+// Places the debug card in position 3 (center) with 4 random placeholders
 // ========================================
 window.addEventListener('load', function () {
     const params = new URLSearchParams(window.location.search);
@@ -451,62 +451,78 @@ window.addEventListener('load', function () {
     if (debugId !== null) {
         console.log("🔍 Debug Mode Active for Card ID:", debugId);
 
-        // 1. Force Screen Switch (Bypass everything)
+        // 1. Force Screen Switch
         const homeScreen = document.getElementById('homeScreen');
+        const drawScreen = document.getElementById('drawScreen');
         const resultScreen = document.getElementById('resultScreen');
 
         if (homeScreen) homeScreen.classList.remove('active');
+        if (drawScreen) drawScreen.classList.remove('active');
         if (resultScreen) resultScreen.classList.add('active');
 
-        // 2. Find Card Data (TAROT_CARDS is global from tarot-data.js)
-        const card = TAROT_CARDS.find(c => c.id == parseInt(debugId));
+        // 2. Find the Debug Card
+        const debugCard = TAROT_CARDS.find(c => c.id == parseInt(debugId));
 
-        if (card) {
-            console.log("Found card:", card.name);
+        if (debugCard) {
+            console.log("Found debug card:", debugCard.name);
 
-            // 3. Construct Visual Content (Image Priority)
-            let visualContent = '';
-            if (card.image) {
-                visualContent = `
-                    <img src="${card.image}" class="debug-card-img" alt="${card.name}"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                    <div class="card-symbol debug-fallback" style="display:none;">${card.symbol || '🎴'}</div>
-                `;
-            } else {
-                visualContent = `<div class="card-symbol">${card.symbol || '🎴'}</div>`;
-            }
+            // 3. Create Mock 5-Card Array
+            // Position 3 (index 2) = debug card, others = random placeholders
+            const usedIds = [debugCard.id];
+            const getRandomCard = () => {
+                const available = TAROT_CARDS.filter(c => !usedIds.includes(c.id));
+                const card = available[Math.floor(Math.random() * available.length)];
+                usedIds.push(card.id);
+                return card;
+            };
 
-            // 4. Inject into Result Cards Container
+            const mockSpread = [
+                { card: getRandomCard(), isReversed: false },
+                { card: getRandomCard(), isReversed: false },
+                { card: debugCard, isReversed: false },        // DEBUG CARD at position 3
+                { card: getRandomCard(), isReversed: false },
+                { card: getRandomCard(), isReversed: false }
+            ];
+
+            // 4. Define 5-card spread labels
+            const labels = ['問題現況', '外在影響', '🔍 預覽', '解決建議', '全能洞見'];
+
+            // 5. Render Result Cards (same format as real game)
             const resultCards = document.getElementById('resultCards');
             if (resultCards) {
-                resultCards.innerHTML = `
-                    <div class="result-card debug-mode-card">
-                        <div class="card-label">🔍 預覽模式</div>
-                        ${visualContent}
-                        <div class="card-name">${card.name}</div>
-                        <div class="card-name-en">${card.nameEn || ''}</div>
-                    </div>
-                `;
+                resultCards.innerHTML = mockSpread.map((drawn, i) => {
+                    const isDebugCard = i === 2;
+                    const visual = drawn.card.image
+                        ? `<img src="${drawn.card.image}" class="tarot-img result-img" alt="${drawn.card.name}">`
+                        : `<span>${drawn.card.symbol || '🎴'}</span>`;
+
+                    return `
+                    <div class="result-card ${drawn.isReversed ? 'reversed' : ''}" ${isDebugCard ? 'style="border-color: #e91e63; box-shadow: 0 0 15px rgba(233, 30, 99, 0.5);"' : ''}>
+                        <div class="card-label">${labels[i]}</div>
+                        <div class="card-symbol">${visual}</div>
+                        <div class="card-name">${drawn.card.name}</div>
+                    </div>`;
+                }).join('');
             }
 
-            // 5. Update Page Title
+            // 6. Update Page Title
             const resultTitle = document.querySelector('.result-title');
             if (resultTitle) {
-                resultTitle.textContent = '🔍 卡牌預覽';
+                resultTitle.textContent = '🔍 五牌陣預覽 - ' + debugCard.name;
             }
 
-            // 6. Hide Meanings Section (Not needed for preview)
+            // 7. Hide Meanings Section
             const resultMeanings = document.getElementById('resultMeanings');
             if (resultMeanings) {
                 resultMeanings.style.display = 'none';
             }
 
-            // 7. Update Action Buttons
+            // 8. Update Action Buttons
             const redrawBtn = document.getElementById('redrawBtn');
             if (redrawBtn) {
-                redrawBtn.textContent = '🏠 回首頁';
+                redrawBtn.textContent = '🔄 重新預覽';
                 redrawBtn.onclick = function () {
-                    window.location.href = 'index.html';
+                    window.location.reload();
                 };
             }
         } else {
