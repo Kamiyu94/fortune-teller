@@ -1482,3 +1482,62 @@ body {
     }
 }
 
+
+/* =========================================
+   NUCLEAR FIX: FORCE GRID LAYOUT & RESET CHILDREN
+   ========================================= */
+
+/* 1. CONTAINER: Strict Grid Definition */
+.result-visual {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important; /* Two equal columns */
+    gap: 15px !important;       /* Clean gap between cards */
+    width: 100% !important;
+    max-width: 400px !important; /* Constrain max width for readability */
+    margin: 0 auto 30px auto !important;
+    
+    /* Reset potential conflict properties */
+    flex-wrap: nowrap !important;
+    justify-content: normal !important;
+    align-items: start !important;
+    box-sizing: border-box !important;
+    padding: 0 10px !important; /* Prevent touching screen edges */
+}
+
+/* 2. CHILDREN: Reset Sizing Logic (THE MISSING PIECE) */
+/* Force cards to fill their grid cells and forget old percentage widths */
+.result-visual .result-card {
+    width: 100% !important;      /* Fill the grid cell */
+    max-width: none !important;  /* Remove old caps */
+    min-width: 0 !important;     /* Prevent overflow */
+    margin: 0 !important;        /* Let Grid Gap handle spacing */
+    flex: none !important;       /* Disable flex behavior */
+    float: none !important;      /* Disable float behavior */
+    position: relative !important; /* Reset positioning */
+}
+
+/* 3. 3-CARD SPREAD: Center Last Card */
+/* 3rd card in a 3-card group spans full width */
+.result-visual > .result-card:nth-child(3):last-child {
+    grid-column: 1 / -1 !important; /* Span all columns */
+    justify-self: center !important;
+    width: 50% !important; /* Manually size the center card to look like the others */
+    max-width: 180px !important; /* Cap it specifically */
+}
+
+/* 4. 5-CARD SPREAD: Center Last Card */
+/* 5th card in a 5-card group spans full width */
+.result-visual > .result-card:nth-child(5):last-child {
+    grid-column: 1 / -1 !important; /* Span all columns */
+    justify-self: center !important;
+    width: 50% !important; /* Manually size the center card */
+    max-width: 180px !important;
+}
+
+/* 5. REINFORCE BOTTOM PADDING (Prevent CTA overlap) */
+@media (max-width: 768px) {
+    .result-content {
+        padding-bottom: 200px !important; /* Increased to be absolutely safe */
+    }
+}
+
