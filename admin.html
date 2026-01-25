@@ -14,10 +14,42 @@
         <header class="admin-header">
             <h1>🔮 塔羅牌資料管理</h1>
             <div class="actions">
-                <button id="exportBtn" class="btn-primary">📤 匯出 tarot-data.js</button>
-                <a href="index.html" class="btn-secondary">返回前台</a>
+                <button id="configBtn" class="btn-icon" title="設定"><span class="icon">⚙️</span></button>
+                <div class="separator"></div>
+                <button id="saveCloudBtn" class="btn-primary" style="display: none;">☁️ 儲存到雲端 (GitHub)</button>
+                <button id="exportBtn" class="btn-secondary">📤 下載檔案</button>
+                <a href="index.html" class="btn-link">返回前台</a>
             </div>
         </header>
+
+        <!-- Config Modal -->
+        <div id="configModal" class="modal hidden">
+            <div class="modal-content">
+                <h2>⚙️ GitHub API 設定</h2>
+                <p class="modal-desc">設定後可直接從後台更新網站資料。</p>
+
+                <div class="form-group">
+                    <label>GitHub Personal Access Token</label>
+                    <input type="password" id="githubToken" class="form-control" placeholder="ghp_xxxxxxxxxxxx">
+                    <small>需要 repo 權限</small>
+                </div>
+
+                <div class="form-group">
+                    <label>GitHub Username</label>
+                    <input type="text" id="githubUser" class="form-control" placeholder="username">
+                </div>
+
+                <div class="form-group">
+                    <label>Repository Name</label>
+                    <input type="text" id="githubRepo" class="form-control" placeholder="fortune-teller">
+                </div>
+
+                <div class="modal-actions">
+                    <button id="saveConfigBtn" class="btn-primary">儲存設定</button>
+                    <button id="closeConfigBtn" class="btn-secondary">關閉</button>
+                </div>
+            </div>
+        </div>
 
         <div class="main-content">
             <!-- 左側列表 -->

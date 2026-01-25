@@ -33,8 +33,29 @@ document.addEventListener('DOMContentLoaded', () => {
         saveCurrentCard();
     });
 
-    // Handle Export
-    exportBtn.addEventListener('click', exportData);
+    // GitHub Config Elements
+    const configBtn = document.getElementById('configBtn');
+    const configModal = document.getElementById('configModal');
+    const saveConfigBtn = document.getElementById('saveConfigBtn');
+    const closeConfigBtn = document.getElementById('closeConfigBtn');
+    const saveCloudBtn = document.getElementById('saveCloudBtn');
+
+    // Config Inputs
+    const githubToken = document.getElementById('githubToken');
+    const githubUser = document.getElementById('githubUser');
+    const githubRepo = document.getElementById('githubRepo');
+
+    // Load saved config
+    loadConfig();
+
+    // Event Listeners for Config & Cloud
+    configBtn.addEventListener('click', () => configModal.classList.remove('hidden'));
+    closeConfigBtn.addEventListener('click', () => configModal.classList.add('hidden'));
+    saveConfigBtn.addEventListener('click', saveConfig);
+    saveCloudBtn.addEventListener('click', saveToCloud);
+
+    // Initial check
+    updateCloudButtonVisibility();
 
     // Functions
     function renderCardList(filter = '') {
@@ -130,7 +151,109 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
     }
 
+    function loadConfig() {
+        const config = JSON.parse(localStorage.getItem('tarot_github_config'));
+        if (config) {
+            githubToken.value = config.token;
+            githubUser.value = config.user;
+            githubRepo.value = config.repo;
+            updateCloudButtonVisibility();
+        }
+    }
+
+    function saveConfig() {
+        const config = {
+            token: githubToken.value.trim(),
+            user: githubUser.value.trim(),
+            repo: githubRepo.value.trim()
+        };
+
+        if (!config.token || !config.user || !config.repo) {
+            alert('請填寫所有欄位');
+            return;
+        }
+
+        localStorage.setItem('tarot_github_config', JSON.stringify(config));
+        configModal.classList.add('hidden');
+        updateCloudButtonVisibility();
+        alert('設定已儲存！');
+    }
+
+    function updateCloudButtonVisibility() {
+        const config = JSON.parse(localStorage.getItem('tarot_github_config'));
+        if (config && config.token) {
+            saveCloudBtn.style.display = 'block';
+        } else {
+            saveCloudBtn.style.display = 'none';
+        }
+    }
+
+    async function saveToCloud() {
+        const config = JSON.parse(localStorage.getItem('tarot_github_config'));
+        if (!config) return;
+
+        if (!confirm('確定要更新 Git Repository 上的資料嗎？\n這將會覆蓋 js/tarot-data.js 檔案。')) {
+            return;
+        }
+
+        const originalText = saveCloudBtn.textContent;
+        saveCloudBtn.textContent = '⏳ 上傳中...';
+        saveCloudBtn.disabled = true;
+
+        try {
+            // 1. Generate Content
+            const content = `// 塔羅牌資料庫 - 78張完整塔羅牌（含圖示）
+const TAROT_CARDS = ${JSON.stringify(cardsData, null, 2)};
+`;
+            // Encode content to Base64 (handle UTF-8)
+            const encoder = new TextEncoder();
+            const data = encoder.encode(content);
+            const base64Content = btoa(String.fromCharCode(...new Uint8Array(data)));
+
+            // 2. Get current SHA of the file
+            const path = 'js/tarot-data.js';
+            const apiUrl = `https://api.github.com/repos/${config.user}/${config.repo}/contents/${path}`;
+
+            const getResponse = await fetch(apiUrl, {
+                headers: {
+                    'Authorization': `token ${config.token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            if (!getResponse.ok) throw new Error('無法取得檔案資訊 (檢查 Token 或 Repo 名稱)');
+            const fileData = await getResponse.json();
+            const sha = fileData.sha;
+
+            // 3. Update the file
+            const putResponse = await fetch(apiUrl, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${config.token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: `Update tarot data via Admin Panel (${new Date().toLocaleDateString()})`,
+                    content: base64Content, // GitHub API expects Base64 for file content
+                    sha: sha
+                })
+            });
+
+            if (!putResponse.ok) throw new Error('更新失敗');
+
+            alert('🎉 更新成功！\nGitHub Pages 將在幾分鐘後自動部署新內容。');
+
+        } catch (error) {
+            console.error(error);
+            alert(`錯誤: ${error.message}`);
+        } finally {
+            saveCloudBtn.textContent = originalText;
+            saveCloudBtn.disabled = false;
+        }
+    }
+
     function exportData() {
+        // ... (Keep existing exportData function)
         // Generate file content
         const fileContent = `// 塔羅牌資料庫 - 78張完整塔羅牌（含圖示）
 const TAROT_CARDS = ${JSON.stringify(cardsData, null, 2)};
@@ -148,7 +271,5 @@ const TAROT_CARDS = ${JSON.stringify(cardsData, null, 2)};
 
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-
-        alert('檔案「tarot-data.js」已開始下載！\n\n請將下載的檔案覆蓋專案目錄中的 js/tarot-data.js，然後提交到 GitHub。');
     }
 });
