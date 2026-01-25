@@ -319,7 +319,9 @@ class TarotApp {
 
         // Load Config
         const siteConfig = JSON.parse(localStorage.getItem('siteConfig')) || {};
-        const targetUrl = siteConfig.lineUrl || "https://line.me/";
+        // 🔥 CLIENT SPECIFIC URL (Hardcoded for Demo)
+        const DEFAULT_DEMO_URL = "https://line.me/R/ti/p/@nuw5707v";
+        const targetUrl = siteConfig.lineUrl || DEFAULT_DEMO_URL;
 
         const ctaContainer = document.createElement('div');
         ctaContainer.className = 'floating-cta';
