@@ -946,3 +946,34 @@ body {
         font-size: 2rem !important;
     }
 }
+
+/* ========================================
+   FIX: Drawing Screen & Menu Icons
+   ======================================== */
+
+/* 1. Fix Reversed Text during Draw Phase */
+/* Counter-rotate text elements inside a reversed tarot card so they are upright */
+.tarot-card.reversed .card-name,
+.tarot-card.reversed .card-name-en,
+.tarot-card.reversed .card-label,
+.tarot-card.reversed .card-position {
+    transform: rotate(180deg);
+    display: inline-block;
+}
+
+/* EXCEPTION: Keep the Emoji/Image reversed (upside down) */
+/* The card wrapper rotates 180deg, so if we don't counter-rotate, it's upside down. */
+/* We WANT the image upside down, so we DO NOT counter-rotate .card-symbol or img */
+/* But wait! .tarot-card.reversed ALREADY rotates the whole container. */
+/* So text needs rotate(180deg) to be upright. Image stays as is. */
+.tarot-card.reversed .card-symbol,
+.tarot-card.reversed .card-image,
+.tarot-card.reversed img {
+    transform: none; /* Explicitly keep it flipped with the container */
+}
+
+/* 2. Fix Invisible Menu Icons */
+.card-icon {
+    color: var(--accent-gold) !important;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
