@@ -1073,3 +1073,32 @@ body {
     color: #FFD700 !important; /* Keep text Gold */
 }
 
+
+/* =========================================
+   RESTORE LEGACY ICON STYLES (The Fix)
+   ========================================= */
+
+/* Apply the logic found in backup (formerly .mode-btn) to current .mode-card */
+.mode-card .card-icon {
+    color: #ffffff !important;  /* Force White */
+    fill: #ffffff !important;   /* Safety for SVGs */
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.6) !important; /* The Glow */
+    
+    /* Ensure font rendering treats it as text, not emoji */
+    font-family: Arial, sans-serif !important; 
+    font-weight: normal !important;
+    font-style: normal !important;
+}
+
+/* Add the hover effect from backup */
+.mode-card:hover .card-icon {
+    transform: scale(1.1) !important;
+    transition: transform 0.3s ease;
+}
+
+/* Nuclear Cleanup: Remove any 'filter: invert' experiments */
+.card-icon {
+    filter: none !important;
+    -webkit-filter: none !important;
+}
+
