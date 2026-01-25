@@ -326,7 +326,7 @@ class TarotApp {
         ctaContainer.innerHTML = `
             <button class="line-floating-btn" onclick="window.open('${targetUrl}', '_blank')">
                 <span class="line-icon">💬</span>
-                <span class="line-text">預約老師解盤</span>
+                <span class="line-text">詢問老師</span>
             </button>
         `;
         document.body.appendChild(ctaContainer);

@@ -1209,3 +1209,60 @@ body {
 }
 
 @keyframes float-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ========================================
+   MOBILE REFINEMENTS (Chameleon CTA & Card Size)
+   ======================================== */
+
+/* CHAMELEON CTA STRATEGY */
+/* On small/short screens, stop floating to prevent overlap */
+@media (max-width: 600px) and (max-height: 750px) {
+    /* 1. Reset the floating container to be a normal block at the bottom */
+    .floating-cta {
+        position: relative !important; /* Stop floating */
+        bottom: auto !important;
+        left: auto !important;
+        right: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 20px auto 0 auto !important; /* Add spacing from content */
+        padding: 0 20px 40px 20px; /* Bottom padding for scroll */
+        animation: none !important;
+    }
+
+    /* 2. Reset the button style to look good as a static block */
+    .line-floating-btn {
+        width: 100% !important;
+        justify-content: center;
+        box-shadow: 0 4px 10px rgba(6, 199, 85, 0.3);
+    }
+
+    /* 3. Remove the huge padding from content, since button is no longer overlapping */
+    .result-content {
+        padding-bottom: 30px !important; /* Back to normal padding */
+    }
+}
+
+/* MOBILE DRAW CARD ENLARGEMENT */
+@media (max-width: 600px) {
+    /* Target cards ONLY in the drawing section */
+    .draw-content .tarot-card {
+        width: 60vw !important;  /* 60% of screen width */
+        height: calc(60vw * 1.75) !important; /* Maintain 2:3.5 aspect ratio */
+        max-width: 260px !important; /* Cap it so it's not too crazy on tablets */
+        max-height: 455px !important;
+        margin: 0 auto 30px auto !important; /* Center it */
+    }
+
+    /* Adjust the perspective container if needed */
+    .draw-content .cards-container {
+        min-height: calc(60vw * 1.8); /* Ensure container fits the new big card */
+        padding-bottom: 20px;
+    }
+
+    /* Adjust 'Click to Draw' hint text position */
+    .draw-hint {
+        margin-top: 10px;
+    }
+}
