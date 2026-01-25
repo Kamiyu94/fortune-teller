@@ -521,3 +521,31 @@ small {
     border-top: 1px solid var(--border-color);
     padding-top: 15px;
 }
+/* ========================================
+   FIX: Admin Image Preview Regression
+   ======================================== */
+
+/* Isolate Admin Preview from Frontend Styles */
+.preview-img {
+    position: static !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important; /* Reset any frontend max-height */
+    object-fit: contain !important; /* Ensure full image visibility */
+    transform: none !important;
+    border-radius: 4px !important;
+    display: block;
+}
+
+.preview-img.hidden {
+    display: none !important;
+}
+
+.current-image {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden !important;
+    position: relative;
+    background: #2a2a2a; /* Ensure dark background behind transparent images */
+}
