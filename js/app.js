@@ -320,16 +320,13 @@ class TarotApp {
         this.showLoading(true);
 
         try {
-            // 等待字體載入
+            // Wait for fonts
             await document.fonts.ready;
 
-            // 暫時移除滾動限制，讓整個內容都能被擷取
-            const originalMaxHeight = this.resultContent.style.maxHeight;
-            const originalOverflow = this.resultContent.style.overflow;
-            this.resultContent.style.maxHeight = 'none';
-            this.resultContent.style.overflow = 'visible';
+            // Apply Snapshot Mode (text-only, full height)
+            this.resultContent.classList.add('snapshot-mode');
 
-            // 等待重排
+            // Wait for layout update
             await new Promise(resolve => setTimeout(resolve, 100));
 
             const canvas = await html2canvas(this.resultContent, {
@@ -344,11 +341,10 @@ class TarotApp {
                 windowHeight: this.resultContent.scrollHeight
             });
 
-            // 恢復原本的樣式
-            this.resultContent.style.maxHeight = originalMaxHeight;
-            this.resultContent.style.overflow = originalOverflow;
+            // Remove Snapshot Mode
+            this.resultContent.classList.remove('snapshot-mode');
 
-            // 使用 Blob 和 URL.createObjectURL 來下載
+            // Use Blob and URL.createObjectURL to download
             canvas.toBlob((blob) => {
                 if (blob) {
                     const url = URL.createObjectURL(blob);
@@ -366,14 +362,14 @@ class TarotApp {
             }, 'image/png');
         } catch (error) {
             console.error('Save image failed:', error);
-            // 恢復原本的樣式
-            this.resultContent.style.maxHeight = '';
-            this.resultContent.style.overflow = '';
+            // Remove Snapshot Mode in case of error
+            this.resultContent.classList.remove('snapshot-mode');
             this.showLoading(false);
-            // 備用方案：複製文字到剪貼簿
+            // Fallback: copy text
             this.copyTextResult();
         }
     }
+
 
     copyTextResult() {
         const text = this.generateShareText();

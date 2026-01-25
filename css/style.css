@@ -1014,3 +1014,33 @@ body {
     color: #ffffff !important;
     transform: scale(1.1); /* Subtle zoom on hover */
 }
+
+/* ========================================
+   SNAPSHOT MODE (For html2canvas)
+   ======================================== */
+/* 1. Hide the visual cards section to avoid 3D glitches */
+.result-content.snapshot-mode .result-cards {
+    display: none !important;
+}
+
+/* 2. Optimize Container for Image Export */
+.result-content.snapshot-mode {
+    /* Remove scrollbars and height limits so the full list is captured */
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+
+    /* Optional: Add some padding for a nice frame */
+    padding: 40px !important;
+    background: #1a0a2e !important; /* Ensure dark background matches theme */
+    border: 2px solid var(--accent-gold) !important;
+    border-radius: 0 !important; /* Square corners for image looks professional */
+}
+
+/* 3. Ensure Title is visible and nice */
+.result-content.snapshot-mode .result-title {
+    display: block !important;
+    font-size: 2rem !important;
+    margin-bottom: 30px !important;
+    text-align: center;
+}
