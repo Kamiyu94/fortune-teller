@@ -276,13 +276,30 @@ class TarotApp {
             // 等待字體載入
             await document.fonts.ready;
 
+            // 暫時移除滾動限制，讓整個內容都能被擷取
+            const originalMaxHeight = this.resultContent.style.maxHeight;
+            const originalOverflow = this.resultContent.style.overflow;
+            this.resultContent.style.maxHeight = 'none';
+            this.resultContent.style.overflow = 'visible';
+
+            // 等待重排
+            await new Promise(resolve => setTimeout(resolve, 100));
+
             const canvas = await html2canvas(this.resultContent, {
                 backgroundColor: '#0a0a1a',
                 scale: 2,
                 useCORS: true,
                 allowTaint: true,
-                logging: false
+                logging: false,
+                scrollX: 0,
+                scrollY: 0,
+                windowWidth: this.resultContent.scrollWidth,
+                windowHeight: this.resultContent.scrollHeight
             });
+
+            // 恢復原本的樣式
+            this.resultContent.style.maxHeight = originalMaxHeight;
+            this.resultContent.style.overflow = originalOverflow;
 
             // 使用 Blob 和 URL.createObjectURL 來下載
             canvas.toBlob((blob) => {
@@ -302,6 +319,9 @@ class TarotApp {
             }, 'image/png');
         } catch (error) {
             console.error('Save image failed:', error);
+            // 恢復原本的樣式
+            this.resultContent.style.maxHeight = '';
+            this.resultContent.style.overflow = '';
             this.showLoading(false);
             // 備用方案：複製文字到剪貼簿
             this.copyTextResult();
