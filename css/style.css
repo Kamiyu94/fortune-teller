@@ -1342,3 +1342,42 @@ body {
     position: relative; /* Or absolute depending on layout, verify visibility */
 }
 
+
+/* =================================================================
+   REFACTOR: Result Card Logic (Decoupled from 3D Draw Animation) - CONFIRMATION
+   ================================================================= */
+/* 1. RESET: Force the Result Card Container to be Static (2D) */
+.result-card,
+.result-card.reversed {
+    transform: none !important;
+    perspective: none !important;
+    transition: none !important;
+}
+
+/* 2. REVERSED IMAGE LOGIC: Rotate ONLY the image */
+.result-card.reversed img,
+.result-card.reversed .card-image,
+.result-card.reversed .card-symbol {
+    transform: rotate(180deg) !important;
+    display: inline-block;
+}
+
+/* 3. TEXT SAFETY: Ensure all text remains upright */
+.result-card.reversed .card-name,
+.result-card.reversed .card-name-en,
+.result-card.reversed .card-label,
+.result-card.reversed .card-position,
+.result-card.reversed .badge {
+    transform: none !important;
+    display: block;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* 4. BADGE POSITIONING FIX */
+.result-card .card-position,
+.result-card .badge {
+    z-index: 10;
+    position: relative;
+}
+
