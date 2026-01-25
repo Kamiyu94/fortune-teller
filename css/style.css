@@ -933,3 +933,62 @@ body {
         padding-bottom: 30px;
     }
 }
+/* =========================================
+   POST-REFACTOR FIXES (Revised)
+   ========================================= */
+
+/* 1. RESTORE ACTION BUTTONS (Fix Disappearance) */
+/* Ensure these buttons are visible, flex, and have z-index */
+.action-buttons {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 15px !important;
+    margin-top: 30px !important;
+    position: relative !important;
+    z-index: 100 !important; /* Bring to front */
+    width: 100% !important;
+    padding-bottom: 20px !important;
+}
+
+/* Ensure the buttons themselves have style */
+.btn-secondary, .btn-primary {
+    display: inline-flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* 2. FIX BLACK ICONS (Select Mode Screen) */
+/* Target the icons in the selection cards */
+/* USE WHITE for icons to contrast with Gold Text */
+.mode-card .icon, 
+.mode-card svg,
+.mode-card i {
+    color: #FFFFFF !important; /* Pure White */
+    fill: #FFFFFF !important;
+}
+.mode-card {
+    color: #FFD700 !important; /* Text remains Gold */
+}
+
+/* 3. CTA BUTTON OPTIMIZATION (Pill Shape) */
+/* Make it smaller so it doesn't block the 'Back' button if at top */
+.floating-cta {
+    width: auto !important; /* Don't span full width */
+    min-width: 160px !important;
+    max-width: 200px !important;
+    border-radius: 50px !important; /* Pill shape */
+    padding: 10px 25px !important;
+    
+    /* Centering logic */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    right: auto !important;
+}
+
+.line-floating-btn {
+    border-radius: 50px !important;
+    padding: 12px 20px !important;
+    width: auto !important;
+    justify-content: center !important;
+}
+
