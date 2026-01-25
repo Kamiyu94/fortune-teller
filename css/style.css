@@ -1266,3 +1266,34 @@ body {
         margin-top: 10px;
     }
 }
+
+/* ========================================
+   MOBILE ANIMATION FIX (Prevent Jitter)
+   ======================================== */
+/* 1. Desktop Animation */
+@keyframes float-in { 
+    from { opacity: 0; transform: translateY(20px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
+
+/* 2. Mobile Animation (Fix Jitter) */
+@keyframes float-in-mobile { 
+    /* Start: Center X, Offset Y */
+    from { opacity: 0; transform: translate(-50%, 20px); } 
+    /* End: Center X, Zero Y */
+    to { opacity: 1; transform: translate(-50%, 0); } 
+}
+
+.floating-cta {
+    /* Desktop Default */
+    animation: float-in 0.5s ease-out forwards;
+}
+
+@media (max-width: 768px) {
+    .floating-cta {
+        /* Mobile Override: Use the special animation */
+        animation: float-in-mobile 0.5s ease-out forwards !important;
+        transform: translate(-50%, 0); /* Static state matches end frame */
+    }
+}
+

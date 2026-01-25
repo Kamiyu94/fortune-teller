@@ -142,6 +142,15 @@ class TarotApp {
         this.switchScreen(this.homeScreen);
         this.drawnCards = [];
         this.currentDrawIndex = 0;
+
+        // Remove CTA
+        const cta = document.querySelector('.floating-cta');
+        if (cta) cta.remove();
+
+        // Clean URL
+        if (window.location.hash === '#result') {
+            history.replaceState(null, '', ' '); // Remove hash
+        }
     }
 
     getCardCount(mode) {
@@ -311,6 +320,9 @@ class TarotApp {
         }).join('');
 
         this.switchScreen(this.resultScreen);
+
+        // Push History State
+        history.pushState({ page: 'result' }, 'Result', '#result');
 
         // Inject Floating CTA Button
         // Inject Floating CTA Button
@@ -547,6 +559,31 @@ window.addEventListener('load', function () {
             }
         } else {
             console.error("Card not found for ID:", debugId);
+        }
+    }
+});
+
+// Handle Browser Back Button
+window.addEventListener('popstate', (event) => {
+    // If we are popping back to the initial state (no hash)
+    // We need to access the TarotApp instance. Since it's inside a closure/class, 
+    // we might need to expose it or reload. simpler: reload if hash is empty.
+    // Or better: trigger the back button logic if we are on home.
+    
+    if (!window.location.hash) {
+        // Assume we want to go home if hash is empty
+        const homeBtn = document.getElementById('backBtn'); // This is usually on draw screen
+        // Ideally we call resetGame. But we don't have global access.
+        // Let's reload to be safe and clean, OR find the instance.
+        // For this simple app, we can just reload or try to click a back button.
+        
+        // Hack: Click the result back button if it's visible
+        const resultBack = document.getElementById('resultBackBtn');
+        if (resultBack && resultBack.offsetParent) {
+            resultBack.click();
+        } else {
+            // Just reload to clear state if confused
+             window.location.reload();
         }
     }
 });
