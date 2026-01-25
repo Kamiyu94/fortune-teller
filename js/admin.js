@@ -255,15 +255,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showPreviewImage(src) {
-        imagePreviewBox.img.src = src;
-        imagePreviewBox.img.classList.remove('hidden');
-        imagePreviewBox.emoji.classList.add('hidden');
+        // CRITICAL: Clear container first to prevent ghosting
+        const container = imagePreviewBox.container;
+        container.innerHTML = `<img src="${src}" class="preview-img" alt="Card Image">`;
     }
 
     function showPreviewSymbol(char) {
-        imagePreviewBox.emoji.textContent = char;
-        imagePreviewBox.emoji.classList.remove('hidden');
-        imagePreviewBox.img.classList.add('hidden');
+        // CRITICAL: Clear container first to prevent ghosting
+        const container = imagePreviewBox.container;
+        container.innerHTML = `<span class="placeholder-emoji">${char}</span>`;
     }
 
     function saveCurrentCard() {
