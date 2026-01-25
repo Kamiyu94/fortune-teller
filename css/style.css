@@ -961,3 +961,48 @@ body {
     -webkit-filter: none !important;
 }
 
+
+/* =========================================
+   EMERGENCY RESTORATION KIT (Fixing Cleanup Regressions)
+   ========================================= */
+
+/* 1. RESTORE WHITE ICONS (The Text-Shadow Method) */
+/* Targets the Unicode character inside the mode card */
+.mode-card .card-icon, 
+.card-icon {
+    color: #ffffff !important;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8) !important;
+    font-family: Arial, sans-serif !important; /* Force text rendering */
+    font-style: normal !important;
+    display: inline-block !important;
+    filter: none !important; /* Ensure no bad filters remain */
+}
+/* Hover effect */
+.mode-card:hover .card-icon {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+/* 2. RESTORE PILL-SHAPE CTA (Fix 'Too Big' Issue) */
+.floating-cta {
+    width: auto !important;
+    min-width: 160px !important;
+    max-width: 200px !important;
+    border-radius: 50px !important; /* Rounded pill */
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    right: auto !important;
+    bottom: 30px !important; /* Ensure generic spacing */
+}
+
+/* 3. RESTORE BUTTON SPACING (Fix Overlap Issue) */
+/* Adds a massive invisible cushion below the buttons so CTA has space to float */
+.action-buttons {
+    position: relative !important;
+    z-index: 100 !important;
+    display: flex !important;
+    gap: 15px !important;
+    padding-bottom: 160px !important; /* CRITICAL: The Spacer */
+    margin-bottom: 0 !important;
+}
+
