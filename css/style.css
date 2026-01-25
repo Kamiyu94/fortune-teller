@@ -1381,3 +1381,58 @@ body {
     position: relative;
 }
 
+
+/* =========================================
+   BUG FIXES: Badge, Scroll, and CTA Layout
+   ========================================= */
+
+/* 1. FIX MISSING BADGE (REVERSED) */
+/* Ensure the 'Reversed' badge is visible, has a background, and sits on top */
+.result-card.reversed .badge {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 999 !important; /* Force on top of image */
+    position: absolute !important;
+    bottom: 10px !important; /* Pin to bottom of card */
+    left: 50% !important;
+    transform: translateX(-50%) !important; /* Center horizontally */
+    background: rgba(0, 0, 0, 0.8) !important; /* Ensure contrast */
+    color: #FFD700 !important; /* Gold text */
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+/* 2. FIX MOBILE SCROLLING (DRAW SCREEN) */
+/* Allow scrolling when cards are huge on mobile */
+@media (max-width: 600px) {
+    .draw-section, 
+    .draw-content,
+    .main-container {
+        height: auto !important; /* Allow height to expand */
+        min-height: 100vh;
+        overflow-y: auto !important; /* FORCE SCROLL */
+        padding-bottom: 100px; /* Space for scrolling past last card */
+    }
+    
+    /* Ensure body doesn't lock scroll */
+    body {
+        overflow-y: auto !important;
+    }
+}
+
+/* 3. FIX MOBILE CTA POSITIONS (iPhone SE / Small Screens) */
+/* Fix the button jumping to top. We force it to stick to the bottom of the document flow */
+@media (max-width: 600px) and (max-height: 750px) {
+    .floating-cta {
+        position: relative !important; /* Static flow */
+        top: auto !important;    /* Prevent jumping to top */
+        bottom: auto !important; /* Reset bottom */
+        left: 0 !important;
+        right: 0 !important;
+        margin: 30px auto 10px auto !important; /* Add top margin to separate from content */
+        z-index: 9999;
+        display: flex !important;
+    }
+}
+
