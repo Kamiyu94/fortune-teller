@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="塔羅牌占卜 - 探索命運的指引">
+    <meta name="theme-color" content="#1a0a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>塔羅牌占卜</title>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.svg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- html2canvas for screenshot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+
+<body>
+    <!-- 星空背景 -->
+    <div class="stars-container" id="starsContainer"></div>
+
+    <!-- 主畫面 -->
+    <div class="screen active" id="homeScreen">
+        <div class="home-content">
+            <div class="logo">
+                <span class="logo-symbol">✧</span>
+                <h1>塔羅牌占卜</h1>
+                <span class="logo-symbol">✧</span>
+            </div>
+            <p class="subtitle">探索命運的神秘指引</p>
+
+            <div class="mode-buttons">
+                <button class="mode-btn" id="singleModeBtn">
+                    <span class="card-icon">🂠</span>
+                    <span class="mode-title">單張抽牌</span>
+                    <span class="mode-desc">獲得今日的靈感指引</span>
+                </button>
+
+                <button class="mode-btn" id="threeModeBtn">
+                    <span class="card-icon">🂠🂠🂠</span>
+                    <span class="mode-title">三張牌陣</span>
+                    <span class="mode-desc">過去・現在・未來</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 抽牌畫面 -->
+    <div class="screen" id="drawScreen">
+        <button class="back-btn" id="backBtn">← 返回</button>
+
+        <div class="draw-content">
+            <h2 class="draw-title" id="drawTitle">點擊卡牌抽牌</h2>
+
+            <div class="cards-container" id="cardsContainer">
+                <!-- Cards will be dynamically inserted here -->
+            </div>
+
+            <div class="draw-hint" id="drawHint">
+                <span class="hint-icon">👆</span>
+                <span>點擊卡牌揭示命運</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 結果畫面 -->
+    <div class="screen" id="resultScreen">
+        <button class="back-btn" id="resultBackBtn">← 返回</button>
+
+        <div class="result-content" id="resultContent">
+            <h2 class="result-title">占卜結果</h2>
+
+            <div class="result-cards" id="resultCards">
+                <!-- Result cards will be inserted here -->
+            </div>
+
+            <div class="result-meanings" id="resultMeanings">
+                <!-- Card meanings will be inserted here -->
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="action-btn save-btn" id="saveBtn">
+                <span>📥</span> 儲存圖片
+            </button>
+            <button class="action-btn share-btn" id="shareBtn">
+                <span>📤</span> 分享結果
+            </button>
+            <button class="action-btn redraw-btn" id="redrawBtn">
+                <span>🔄</span> 重新抽牌
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading overlay for save/share -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p>處理中...</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/tarot-data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

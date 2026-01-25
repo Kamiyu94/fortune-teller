@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2d1b4e"/>
+      <stop offset="100%" style="stop-color:#1a0a2e"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700"/>
+      <stop offset="100%" style="stop-color:#ff8c00"/>
+    </linearGradient>
+    <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700"/>
+      <stop offset="100%" style="stop-color:#ffeb3b"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Solid background for visibility in any theme -->
+  <rect width="192" height="192" rx="38" fill="#1a0a2e"/>
+  <rect width="192" height="192" rx="38" fill="url(#bg)"/>
+  
+  <!-- Outer border for visibility -->
+  <rect x="3" y="3" width="186" height="186" rx="36" fill="none" stroke="#9b59b6" stroke-width="2" opacity="0.6"/>
+  
+  <!-- Stars (lighter for better visibility) -->
+  <circle cx="30" cy="30" r="3" fill="#fff" opacity="0.8"/>
+  <circle cx="160" cy="25" r="2" fill="#fff" opacity="0.7"/>
+  <circle cx="25" cy="150" r="2" fill="#fff" opacity="0.6"/>
+  <circle cx="165" cy="160" r="3" fill="#fff" opacity="0.7"/>
+  <circle cx="50" cy="80" r="1.5" fill="#fff" opacity="0.5"/>
+  <circle cx="145" cy="100" r="2" fill="#fff" opacity="0.6"/>
+  <circle cx="40" cy="120" r="1.5" fill="#fff" opacity="0.5"/>
+  <circle cx="155" cy="70" r="1.5" fill="#fff" opacity="0.5"/>
+  
+  <!-- Card shape with glow -->
+  <rect x="56" y="36" width="80" height="120" rx="10" fill="rgba(155, 89, 182, 0.3)"/>
+  <rect x="56" y="36" width="80" height="120" rx="10" fill="none" stroke="url(#cardGrad)" stroke-width="4"/>
+  
+  <!-- Inner card decoration -->
+  <rect x="64" y="44" width="64" height="104" rx="6" fill="rgba(255, 215, 0, 0.1)" stroke="#ffd700" stroke-width="1" opacity="0.5"/>
+  
+  <!-- Star symbol in center -->
+  <path d="M96 58 L101 78 L121 82 L105 94 L110 114 L96 102 L82 114 L87 94 L71 82 L91 78 Z" 
+        fill="url(#starGrad)"/>
+  
+  <!-- Center glow -->
+  <circle cx="96" cy="86" r="6" fill="#ffd700" opacity="0.9"/>
+  <circle cx="96" cy="86" r="3" fill="#fff" opacity="0.8"/>
+</svg>

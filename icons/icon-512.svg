@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2d1b4e"/>
+      <stop offset="100%" style="stop-color:#1a0a2e"/>
+    </linearGradient>
+    <linearGradient id="cardGrad512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700"/>
+      <stop offset="100%" style="stop-color:#ff8c00"/>
+    </linearGradient>
+    <linearGradient id="starGrad512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffd700"/>
+      <stop offset="100%" style="stop-color:#ffeb3b"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Solid background for visibility in any theme -->
+  <rect width="512" height="512" rx="100" fill="#1a0a2e"/>
+  <rect width="512" height="512" rx="100" fill="url(#bg512)"/>
+  
+  <!-- Outer border for visibility -->
+  <rect x="8" y="8" width="496" height="496" rx="94" fill="none" stroke="#9b59b6" stroke-width="4" opacity="0.6"/>
+  
+  <!-- Stars (lighter for better visibility) -->
+  <circle cx="80" cy="80" r="7" fill="#fff" opacity="0.8"/>
+  <circle cx="430" cy="70" r="5" fill="#fff" opacity="0.7"/>
+  <circle cx="70" cy="400" r="4" fill="#fff" opacity="0.6"/>
+  <circle cx="440" cy="430" r="7" fill="#fff" opacity="0.7"/>
+  <circle cx="130" cy="200" r="4" fill="#fff" opacity="0.5"/>
+  <circle cx="390" cy="270" r="5" fill="#fff" opacity="0.6"/>
+  <circle cx="100" cy="300" r="3" fill="#fff" opacity="0.5"/>
+  <circle cx="420" cy="150" r="4" fill="#fff" opacity="0.6"/>
+  <circle cx="60" cy="250" r="3" fill="#fff" opacity="0.5"/>
+  <circle cx="455" cy="300" r="4" fill="#fff" opacity="0.5"/>
+  
+  <!-- Card shape with glow -->
+  <rect x="146" y="96" width="220" height="320" rx="24" fill="rgba(155, 89, 182, 0.3)"/>
+  <rect x="146" y="96" width="220" height="320" rx="24" fill="none" stroke="url(#cardGrad512)" stroke-width="8"/>
+  
+  <!-- Inner card decoration -->
+  <rect x="166" y="116" width="180" height="280" rx="16" fill="rgba(255, 215, 0, 0.1)" stroke="#ffd700" stroke-width="2" opacity="0.5"/>
+  
+  <!-- Star symbol in center -->
+  <path d="M256 155 L270 215 L330 228 L284 264 L298 324 L256 286 L214 324 L228 264 L182 228 L242 215 Z" 
+        fill="url(#starGrad512)"/>
+  
+  <!-- Center glow -->
+  <circle cx="256" cy="240" r="16" fill="#ffd700" opacity="0.9"/>
+  <circle cx="256" cy="240" r="8" fill="#fff" opacity="0.8"/>
+  
+  <!-- Bottom decorative line -->
+  <line x1="190" y1="370" x2="322" y2="370" stroke="#ffd700" stroke-width="3" opacity="0.6"/>
+  <circle cx="190" cy="370" r="4" fill="#ffd700" opacity="0.6"/>
+  <circle cx="322" cy="370" r="4" fill="#ffd700" opacity="0.6"/>
+</svg>
