@@ -41,13 +41,21 @@ class TarotApp {
                     card: card,
                     isReversed: false
                 }];
-                // Force to result screen immediately
-                // Small delay to ensure DOM is ready if needed, but here it's fine
+
+                // Force screen switch with direct style manipulation
                 setTimeout(() => {
-                    this.switchScreen(this.resultScreen);
+                    // Hide other screens explicitly
+                    this.homeScreen.style.display = 'none';
+                    this.homeScreen.classList.remove('active');
+                    this.drawScreen.style.display = 'none';
+                    this.drawScreen.classList.remove('active');
+
+                    // Show result screen explicitly
+                    this.resultScreen.style.display = 'flex';
+                    this.resultScreen.classList.add('active');
+
+                    // Render the result
                     this.showResult();
-                    // Optional: Hide action buttons in debug mode? 
-                    // No, let user test saving too.
                 }, 100);
             }
         }

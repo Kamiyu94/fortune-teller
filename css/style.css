@@ -411,20 +411,27 @@ body {
 }
 
 .result-cards {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 20px;
     margin-bottom: 30px;
-    flex-wrap: wrap;
+    max-width: 600px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .result-card {
     background: linear-gradient(135deg, #f8f4e8 0%, #e8e4d8 100%);
     border: 3px solid var(--accent-gold);
     border-radius: 12px;
-    padding: 15px 10px;
-    width: 100px;
+    padding: 20px 15px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
 }
 
 .result-card.reversed {
@@ -447,9 +454,12 @@ body {
 }
 
 .result-card .card-symbol {
-    font-size: 2rem;
+    font-size: 3rem;
     line-height: 1;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .result-card.reversed .card-symbol {
@@ -457,7 +467,7 @@ body {
 }
 
 .result-card .card-name {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #1a0a2e;
     font-weight: 700;
 }
@@ -744,19 +754,37 @@ body {
 }
 
 .tarot-img.result-img {
-    height: 60px;
+    height: 120px;
     width: auto;
     max-width: 100%;
 }
 
 .tarot-img.meaning-img {
-    height: 40px;
+    height: 50px;
     width: auto;
     vertical-align: middle;
 }
 
 @media (max-width: 600px) {
+    .result-cards {
+        grid-template-columns: 1fr;
+        max-width: 280px;
+    }
+
+    .result-card {
+        min-height: 280px;
+        padding: 25px 20px;
+    }
+
+    .result-card .card-symbol {
+        font-size: 4rem;
+    }
+
     .tarot-img.result-img {
-        height: 45px;
+        height: 180px;
+    }
+
+    .tarot-img.meaning-img {
+        height: 60px;
     }
 }
