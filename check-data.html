@@ -4,28 +4,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>塔羅牌資料檢查</title>
+    <title>塔羅牌資料庫檢查</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #1a1a1a;
-            color: #ccc;
-            font-family: monospace;
-            padding: 20px;
+        :root {
+            --bg-dark: #1a1a1a;
+            --bg-panel: #252525;
+            --text-primary: #e0e0e0;
+            --text-secondary: #aaaaaa;
+            --accent-gold: #C5A059;
+            --accent-green: #81C784;
+            --accent-purple: #CE93D8;
+            --border-color: #404040;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Serif TC', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            padding: 20px;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            max-width: 1200px;
+            margin: 0 auto 30px;
             padding-bottom: 20px;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .title {
-            color: #C5A059;
-            margin: 0;
+        .title-group h1 {
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-input {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 4px;
+            width: 250px;
+            font-size: 0.9rem;
         }
 
         .btn {
@@ -37,80 +77,258 @@
             cursor: pointer;
             text-decoration: none;
             font-size: 14px;
+            transition: background 0.2s;
         }
 
         .btn:hover {
             background: #555;
         }
 
-        #content {
-            white-space: pre-wrap;
-            word-break: break-all;
-            background: #222;
-            padding: 20px;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .data-status-bar {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            color: #81C784;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .data-status-bar.error {
+            background: rgba(244, 67, 54, 0.1);
+            border-color: rgba(244, 67, 54, 0.3);
+            color: #ef5350;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .card-item {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            border: 1px solid #333;
-            color: #a5d6a7;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .status {
-            font-size: 14px;
-            color: #888;
+        .card-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-gold);
         }
 
-        .error {
-            color: #ff5252;
+        .card-header {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
+
+        .card-symbol {
+            font-size: 2rem;
+            width: 40px;
+            text-align: center;
+        }
+
+        .card-name-group {
+            flex: 1;
+        }
+
+        .card-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-gold);
+        }
+
+        .card-id {
+            color: #666;
+            font-size: 0.8rem;
+            font-family: monospace;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .meaning-section {
+            margin-bottom: 15px;
+        }
+
+        .meaning-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .upright .section-title {
+            color: var(--accent-green);
+        }
+
+        .reversed .section-title {
+            color: var(--accent-purple);
+        }
+
+        .keywords-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ccc;
+        }
+
+        .desc-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #ddd;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Expand/Collapse logic could optionally handle full text */
     </style>
 </head>
 
 <body>
     <div class="header">
-        <div>
-            <h1 class="title">📄 tarot-data.js 檔案檢查</h1>
-            <span class="status" id="status">正在讀取...</span>
+        <div class="title-group">
+            <h1>🔮 塔羅牌資料庫檢查</h1>
+            <div class="subtitle">目前的線上資料內容檢視</div>
         </div>
-        <div>
-            <a href="js/tarot-data.js" target="_blank" class="btn">下載原始檔案</a>
+        <div class="toolbar">
+            <input type="text" id="searchInput" class="search-input" placeholder="搜尋牌名、關鍵字...">
             <a href="admin.html" class="btn">返回後台</a>
         </div>
     </div>
 
-    <div id="content">載入中...</div>
+    <div class="container">
+        <div id="statusBox" class="data-status-bar">
+            <span>讀取中...</span>
+        </div>
+
+        <div id="cardGrid" class="card-grid">
+            <!-- Cards will be populated here -->
+        </div>
+    </div>
 
     <script>
-        const statusEl = document.getElementById('status');
-        const contentEl = document.getElementById('content');
+        // Load the actual data file as a script to get TAROT_CARDS variable
+        // We use a dynamic script tag with timestamp to bypass cache
+        const script = document.createElement('script');
+        script.src = 'js/tarot-data.js?t=' + new Date().getTime();
 
-        // 1. 嘗試以純文字方式讀取檔案 (檢查格式)
-        fetch('js/tarot-data.js?t=' + new Date().getTime()) // 加時間戳避免快取
-            .then(response => {
-                if (!response.ok) throw new Error('無法讀取檔案');
-                statusEl.textContent = `檔案大小: ${response.headers.get('content-length') || '未知'} bytes`;
-                return response.text();
-            })
-            .then(text => {
-                contentEl.textContent = text;
+        script.onload = () => {
+            if (typeof TAROT_CARDS !== 'undefined') {
+                document.getElementById('statusBox').innerHTML = `
+                    <span>✅ 資料讀取成功 (版本: ${new Date().toLocaleString()})</span>
+                    <span>共 ${TAROT_CARDS.length} 張牌卡</span>
+                `;
+                renderCards(TAROT_CARDS);
+            } else {
+                showError('TAROT_CARDS 變數未定義，檔案可能格式錯誤。');
+            }
+        };
 
-                // 2. 嘗試解析看看是否為有效 JS/JSON
-                try {
-                    // 這裡我們用一個比較 hack 的方式檢查：
-                    // 因為檔案內容是 "const TAROT_CARDS = [...];"
-                    // 我們去掉宣告部分，嘗試 JSON.parse 陣列部分
-                    const jsonPart = text.replace(/const\s+TAROT_CARDS\s*=\s*/, '').replace(/;\s*$/, '');
-                    // 注意：如果檔案原本就不是 JSON 格式 (例如有單引號或註解)，這步會失敗是正常的
-                    // 但透過顯示出來讓使用者看已足夠
-                    statusEl.textContent += " | ✅ 讀取成功";
-                } catch (e) {
-                    // JS 檔案不一定是合法 JSON，所以這裡不報錯，僅顯示
-                }
-            })
-            .catch(err => {
-                statusEl.textContent = '❌讀取失敗';
-                statusEl.classList.add('error');
-                contentEl.textContent = err.message;
-                contentEl.classList.add('error');
+        script.onerror = () => {
+            showError('無法載入 js/tarot-data.js，請確認檔案是否存在。');
+        };
+
+        document.body.appendChild(script);
+
+        const searchInput = document.getElementById('searchInput');
+        let currentData = [];
+
+        function renderCards(data) {
+            currentData = data;
+            const grid = document.getElementById('cardGrid');
+            const filter = searchInput.value.toLowerCase();
+
+            grid.innerHTML = '';
+
+            let count = 0;
+            data.forEach(card => {
+                // Search logic
+                const searchTarget = `
+                    ${card.name} ${card.nameEn} 
+                    ${card.upright.keywords.join(' ')} 
+                    ${card.reversed.keywords.join(' ')}
+                `.toLowerCase();
+
+                if (filter && !searchTarget.includes(filter)) return;
+
+                const el = document.createElement('div');
+                el.className = 'card-item';
+                el.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-symbol">${card.symbol || '🎴'}</div>
+                        <div class="card-name-group">
+                            <div class="card-name">${card.name}</div>
+                            <div class="card-id">${card.nameEn} (ID: ${card.id})</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="meaning-section upright">
+                            <div class="section-title">⬆️ 正位</div>
+                            <div class="keywords-tags">
+                                ${card.upright.keywords.map(k => `<span class="tag">${k}</span>`).join('')}
+                            </div>
+                            <div class="desc-text" title="${card.upright.desc}">${card.upright.desc}</div>
+                        </div>
+                        <div class="meaning-section reversed">
+                            <div class="section-title">⬇️ 逆位</div>
+                            <div class="keywords-tags">
+                                ${card.reversed.keywords.map(k => `<span class="tag">${k}</span>`).join('')}
+                            </div>
+                            <div class="desc-text" title="${card.reversed.desc}">${card.reversed.desc}</div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(el);
+                count++;
             });
+
+            if (count === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">沒有找到符合的牌卡</div>';
+            }
+        }
+
+        function showError(msg) {
+            const box = document.getElementById('statusBox');
+            box.className = 'data-status-bar error';
+            box.innerHTML = `<span>❌ ${msg}</span>`;
+        }
+
+        searchInput.addEventListener('input', () => {
+            if (typeof TAROT_CARDS !== 'undefined') {
+                renderCards(TAROT_CARDS);
+            }
+        });
     </script>
 </body>
 
