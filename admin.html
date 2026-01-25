@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>塔羅牌資料管理後台</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>🔮 塔羅牌資料管理</h1>
+            <div class="actions">
+                <button id="exportBtn" class="btn-primary">📤 匯出 tarot-data.js</button>
+                <a href="index.html" class="btn-secondary">返回前台</a>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- 左側列表 -->
+            <div class="card-list-panel">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="搜尋牌名...">
+                </div>
+                <div class="card-list" id="cardList">
+                    <!-- JS 生成列表 -->
+                </div>
+            </div>
+
+            <!-- 右側編輯區 -->
+            <div class="edit-panel" id="editPanel">
+                <div class="empty-state">請選擇左側卡牌開始編輯</div>
+
+                <form id="editForm" class="edit-form hidden">
+                    <div class="form-header">
+                        <div class="card-preview">
+                            <span class="edit-symbol" id="editSymbolDisplay">🎴</span>
+                            <h2 id="editCardName">卡牌名稱</h2>
+                        </div>
+                        <span class="card-id" id="editCardId">ID: 0</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>卡牌圖示 (Emoji)</label>
+                        <input type="text" id="inputSymbol" class="form-control symbol-input">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>中文名稱</label>
+                            <input type="text" id="inputName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>英文名稱</label>
+                            <input type="text" id="inputNameEn" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="divider">⬆️ 正位含意 (Upright)</div>
+
+                    <div class="form-group">
+                        <label>關鍵字 (用逗號 , 分隔)</label>
+                        <input type="text" id="inputUprightKeywords" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>詳細解釋</label>
+                        <textarea id="inputUprightDesc" class="form-control" rows="4"></textarea>
+                    </div>
+
+                    <div class="divider">⬇️ 逆位含意 (Reversed)</div>
+
+                    <div class="form-group">
+                        <label>關鍵字 (用逗號 , 分隔)</label>
+                        <input type="text" id="inputReversedKeywords" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>詳細解釋</label>
+                        <textarea id="inputReversedDesc" class="form-control" rows="4"></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-save">💾 暫存修改</button>
+                        <span class="save-hint">修改後請點擊右上角「匯出」下載檔案</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 原始資料 -->
+    <script src="js/tarot-data.js"></script>
+    <!-- 後台邏輯 -->
+    <script src="js/admin.js"></script>
+</body>
+
+</html>
