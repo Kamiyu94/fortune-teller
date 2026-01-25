@@ -133,6 +133,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="item-name">${card.name}</span>
                     <span class="item-name-en">${card.nameEn}</span>
                 </div>
+                <div class="item-actions">
+                    <a href="index.html?debug_card=${card.id}" target="_blank" class="preview-btn" onclick="event.stopPropagation()" title="預覽卡牌">🔍</a>
+                </div>
             `;
             el.addEventListener('click', () => selectCard(card.id));
             cardList.appendChild(el);

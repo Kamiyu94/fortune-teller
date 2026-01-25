@@ -23,6 +23,34 @@ class TarotApp {
         this.initEventListeners();
         this.createStars();
         this.registerServiceWorker();
+
+        // Debug Check
+        this.checkDebugMode();
+    }
+
+    checkDebugMode() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const debugId = urlParams.get('debug_card');
+        if (debugId) {
+            const id = parseInt(debugId);
+            const card = TAROT_CARDS.find(c => c.id === id);
+            if (card) {
+                console.log('Debug mode: Previewing card', card.name);
+                this.mode = 'single';
+                this.drawnCards = [{
+                    card: card,
+                    isReversed: false
+                }];
+                // Force to result screen immediately
+                // Small delay to ensure DOM is ready if needed, but here it's fine
+                setTimeout(() => {
+                    this.switchScreen(this.resultScreen);
+                    this.showResult();
+                    // Optional: Hide action buttons in debug mode? 
+                    // No, let user test saving too.
+                }, 100);
+            }
+        }
     }
 
     initElements() {

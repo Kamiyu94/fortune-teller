@@ -138,6 +138,27 @@ body {
     color: var(--text-secondary);
 }
 
+.item-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.preview-btn {
+    text-decoration: none;
+    font-size: 1.2rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    color: var(--text-secondary);
+}
+
+.preview-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--accent-gold);
+    transform: scale(1.1);
+}
+
 /* Right Edit Panel */
 .edit-panel {
     flex: 1;
