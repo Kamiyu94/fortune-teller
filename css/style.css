@@ -1041,3 +1041,35 @@ body {
     z-index: 9999 !important; /* Always on very top */
 }
 
+
+/* =========================================
+   FINAL ICON FIX (Unicode Character)
+   ========================================= */
+
+/* 1. CLEANUP INSTRUCTION (Internal Note) */
+/* Please remove the previous failing blocks targeting '.mode-card svg' or 'path' */
+
+/* 2. THE REAL FIX FOR .card-icon */
+.card-icon {
+    display: inline-block !important;
+    font-size: 40px !important; /* Ensure it's big enough */
+    line-height: 1 !important;
+    
+    /* STRATEGY A: Standard Color (Works on Desktop) */
+    color: #FFFFFF !important;
+    
+    /* STRATEGY B: The iOS Emoji Hack (Works on iPhone) */
+    /* If iOS renders it as a black image, we invert it to white */
+    filter: invert(100%) grayscale(100%) brightness(200%) !important;
+    
+    /* Reset text styles to prevent conflicts */
+    text-decoration: none !important;
+    font-style: normal !important;
+    background: transparent !important;
+}
+
+/* Ensure the container allows the white color to shine */
+.mode-card {
+    color: #FFD700 !important; /* Keep text Gold */
+}
+
