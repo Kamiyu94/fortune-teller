@@ -63,17 +63,35 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load saved config
     loadConfig();
 
-    // --- SITE CONFIG LOGIC (LINE URL) ---
-    const siteConfig = JSON.parse(localStorage.getItem('siteConfig')) || {};
-    const configLineInput = document.getElementById('configLineUrl');
+    // --- SITE SETTINGS MODAL LOGIC ---
+    const settingsModal = document.getElementById('settingsModal');
+    const openSettingsBtn = document.getElementById('openSettingsBtn');
+    const closeSettingsBtn = document.querySelector('.settings-close');
+    const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+    const settingsLineInput = document.getElementById('configLineUrlModal');
 
-    if (configLineInput) {
-        configLineInput.value = siteConfig.lineUrl || "https://line.me/";
+    if (openSettingsBtn && settingsModal) {
+        // Open
+        openSettingsBtn.addEventListener('click', () => {
+            const siteConfig = JSON.parse(localStorage.getItem('siteConfig')) || {};
+            settingsLineInput.value = siteConfig.lineUrl || "https://line.me/";
+            settingsModal.style.display = 'flex';
+        });
 
-        document.getElementById('saveSiteConfigBtn').addEventListener('click', () => {
-            const newConfig = { ...siteConfig, lineUrl: configLineInput.value.trim() };
+        // Close
+        const closeModal = () => { settingsModal.style.display = 'none'; };
+        closeSettingsBtn.addEventListener('click', closeModal);
+        window.addEventListener('click', (e) => {
+            if (e.target === settingsModal) closeModal();
+        });
+
+        // Save
+        saveSettingsBtn.addEventListener('click', () => {
+            const siteConfig = JSON.parse(localStorage.getItem('siteConfig')) || {};
+            const newConfig = { ...siteConfig, lineUrl: settingsLineInput.value.trim() };
             localStorage.setItem('siteConfig', JSON.stringify(newConfig));
-            alert('✅ 網站設定已儲存！\n前台預約連結已更新。');
+            alert('✅ 網站設定已更新！');
+            closeModal();
         });
     }
 

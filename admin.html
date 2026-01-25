@@ -16,26 +16,15 @@
             <div class="actions">
                 <button id="saveCloudBtn" class="btn-primary" style="display: none;">☁️ 寫入雲端</button>
                 <div class="separator" id="cloudSeparator" style="display: none;"></div>
+                <button id="openSettingsBtn" class="btn-secondary"
+                    style="border: 1px solid var(--accent-gold); margin-right: 5px;">⚙️ 網站設定</button>
                 <a href="check-data.html" target="_blank" class="btn-secondary" title="檢查線上檔案內容">🔍 檢查資料</a>
                 <button id="exportBtn" class="btn-secondary">📥 下載檔案</button>
                 <a href="index.html" class="btn-link">返回前台</a>
             </div>
         </header>
 
-        <!-- Site Settings Panel -->
-        <div class="admin-section settings-section"
-            style="background: rgba(42, 26, 62, 0.8); padding: 20px; border-radius: 15px; margin-bottom: 20px; margin-top: 20px; border: 1px solid var(--accent-gold);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h2 style="color: var(--accent-gold); font-size: 1.2rem; margin: 0;">⚙️ 網站設定</h2>
-                <button id="saveSiteConfigBtn" class="btn-primary" style="padding: 6px 15px;">儲存設定</button>
-            </div>
-            <div class="form-group">
-                <label style="display:block; color: #fff; margin-bottom: 5px;">LINE 官方帳號連結 (CTA)</label>
-                <input type="text" id="configLineUrl" placeholder="https://line.me/..."
-                    style="width: 100%; padding: 10px; background: #333; color: #fff; border-radius: 5px; border: 1px solid #555;">
-                <small style="color: #aaa; margin-top: 5px; display: block;">設定後，前台的浮動預約按鈕將連結至此網址。</small>
-            </div>
-        </div>
+
 
         <!-- Hidden Config Trigger (Backup) -->
         <button id="configBtn" style="display: none;"></button>
@@ -194,6 +183,26 @@
             <div class="modal-actions">
                 <button id="confirmImageBtn" class="btn-primary">送出</button>
                 <button id="cancelImageBtn" class="btn-secondary">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal (New) -->
+    <div id="settingsModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content settings-modal-content">
+            <div class="modal-header">
+                <h3>⚙️ 網站全域設定</h3>
+                <span class="close-modal settings-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>LINE 官方帳號連結 (CTA)</label>
+                    <input type="text" id="configLineUrlModal" placeholder="https://line.me/..." class="modal-input">
+                    <small style="color: #888; display:block; margin-top:5px;">使用者點擊「預約老師解盤」時的目標網址。</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveSettingsBtn" class="action-btn save-btn btn-primary">儲存變更</button>
             </div>
         </div>
     </div>
