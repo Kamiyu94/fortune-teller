@@ -977,3 +977,40 @@ body {
     color: var(--accent-gold) !important;
     text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
+
+/* ========================================
+   FINAL PATCH: Force Text Upright & White Icons
+   ======================================== */
+
+/* FORCE TEXT UPRIGHT on Reversed Cards */
+/* Rotate text 180 degrees to counter the card rotation */
+.tarot-card.reversed .card-name,
+.tarot-card.reversed .card-name-en,
+.tarot-card.reversed .card-label,
+.tarot-card.reversed .card-position,
+.result-card.reversed .card-name,
+.result-card.reversed .card-name-en,
+.result-card.reversed .card-label,
+.result-card.reversed .card-position {
+    transform: rotate(180deg) !important;
+    display: inline-block !important; /* Required for transform */
+}
+
+/* Ensure Images/Emojis STAY Reversed (Upside Down) */
+.tarot-card.reversed .card-symbol,
+.tarot-card.reversed img,
+.result-card.reversed .card-symbol,
+.result-card.reversed img {
+    transform: none !important; /* Inherit parent rotation (upside down) */
+}
+
+/* 2. Fix Home Screen Icons to White */
+.mode-btn .card-icon {
+    color: #ffffff !important; /* White Icon */
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.6); /* Soft white glow */
+}
+
+.mode-btn:hover .card-icon {
+    color: #ffffff !important;
+    transform: scale(1.1); /* Subtle zoom on hover */
+}
