@@ -209,6 +209,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function saveToCloud() {
+        // Auto-save current card edits before uploading
+        if (!editForm.classList.contains('hidden')) {
+            saveCurrentCard();
+        }
+
         const config = JSON.parse(localStorage.getItem('tarot_github_config'));
         if (!config) return;
 
