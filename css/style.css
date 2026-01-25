@@ -290,6 +290,17 @@ body {
     font-size: 0.9rem;
     text-align: center;
     padding: 10px;
+    overflow: hidden;
+    /* Clip image during flip animation */
+}
+
+/* Ensure images stay within card-face during flip */
+.card-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
 }
 
 .card-back {
@@ -411,8 +422,9 @@ body {
 }
 
 .result-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
     margin-bottom: 30px;
     max-width: 600px;
@@ -425,13 +437,29 @@ body {
     background: linear-gradient(135deg, #f8f4e8 0%, #e8e4d8 100%);
     border: 3px solid var(--accent-gold);
     border-radius: 12px;
-    padding: 20px 15px;
+    padding: 15px 10px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 200px;
+    /* Strict sizing constraints */
+    aspect-ratio: 2 / 3.5;
+    width: 100%;
+    max-width: 180px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Ensure result card images are contained */
+.result-card img,
+.result-card .tarot-img {
+    width: 100%;
+    height: auto;
+    max-height: 70%;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
 }
 
 .result-card.reversed {
@@ -765,23 +793,35 @@ body {
     vertical-align: middle;
 }
 
-@media (max-width: 600px) {
+/* Mobile: 2-column grid for 5-card spread */
+@media (max-width: 768px) {
     .result-cards {
-        grid-template-columns: 1fr;
-        max-width: 280px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 10px;
+        max-width: 400px;
     }
 
     .result-card {
-        min-height: 280px;
-        padding: 25px 20px;
+        max-width: 100%;
+        aspect-ratio: 2 / 3.5;
+    }
+
+    /* Center the last card if odd number (5 cards) */
+    .result-cards .result-card:last-child:nth-child(odd) {
+        grid-column: span 2;
+        max-width: 50%;
+        margin: 0 auto;
     }
 
     .result-card .card-symbol {
-        font-size: 4rem;
+        font-size: 2.5rem;
     }
 
     .tarot-img.result-img {
-        height: 180px;
+        height: auto;
+        max-height: 60%;
     }
 
     .tarot-img.meaning-img {
