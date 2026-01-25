@@ -1436,3 +1436,49 @@ body {
     }
 }
 
+
+/* =========================================
+   FINAL LAYOUT FIX: CSS GRID FOR RESULTS
+   ========================================= */
+
+/* 1. GRID CONTAINER SETUP (.result-visual) */
+/* Define a strict 2-column grid for all spreads */
+.result-visual {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important; /* Always 2 equal columns */
+    gap: 20px !important; /* Space between cards */
+    justify-items: center !important; /* Center cards horizontally in their grid cells */
+    align-items: start !important;    /* Align cards to the top of their cells */
+    width: 100% !important;
+    max-width: 500px !important; /* Prevent spreading too wide on massive screens */
+    margin: 0 auto 30px auto !important; /* Center the whole grid container */
+}
+
+/* Remove old flex styles if they conflict */
+.result-visual {
+    flex-wrap: nowrap !important;
+    justify-content: normal !important;
+}
+
+/* 2. 3-CARD SPREAD LOGIC (Triangle Layout) */
+/* Target the 3rd card ONLY when it is the last card (i.e., in a 3-card spread) */
+.result-visual > .result-card:nth-child(3):last-child {
+    grid-column: span 2 !important; /* Span across both columns */
+    justify-self: center !important; /* Keep original size and center horizontally */
+}
+
+/* 3. 5-CARD SPREAD LOGIC (Triangle Layout) */
+/* Target the 5th card ONLY when it is the last card (i.e., in a 5-card spread) */
+.result-visual > .result-card:nth-child(5):last-child {
+    grid-column: span 2 !important; /* Span across both columns */
+    justify-self: center !important; /* Keep original size and center horizontally */
+}
+
+/* 4. REINFORCE CTA SAFETY PADDING */
+/* Ensure the bottom content has enough space so the fixed CTA doesn't overlap */
+@media (max-width: 768px) {
+    .result-content {
+        padding-bottom: 180px !important; /* Keep huge buffer zone */
+    }
+}
+
