@@ -21,6 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectAllCheckbox = document.getElementById('selectAllCheckbox');
     const changeCountLabel = document.getElementById('changeCount');
 
+    // Image Upload Modal Elements
+    const imageUploadModal = document.getElementById('imageUploadModal');
+    const modalInputImage = document.getElementById('modalInputImage');
+    const modalInputSymbol = document.getElementById('modalInputSymbol');
+    const confirmImageBtn = document.getElementById('confirmImageBtn');
+    const cancelImageBtn = document.getElementById('cancelImageBtn');
+
     // GitHub Config Elements
     const adminTitle = document.getElementById('adminTitle');
     const configModal = document.getElementById('configModal');
@@ -37,8 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Form inputs
     const inputs = {
-        symbol: document.getElementById('inputSymbol'),
-        image: document.getElementById('inputImage'),
         name: document.getElementById('inputName'),
         nameEn: document.getElementById('inputNameEn'),
         uprightKeywords: document.getElementById('inputUprightKeywords'),
@@ -48,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const imagePreviewBox = {
+        container: document.getElementById('imagePreviewBox'),
         emoji: document.getElementById('editSymbolDisplay'),
         img: document.getElementById('editImageDisplay')
     };
@@ -66,8 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
         saveCurrentCard();
     });
 
-    // Handle Image Input
-    inputs.image.addEventListener('change', handleImageSelect);
+    // Image Modal Trigger
+    imagePreviewBox.container.addEventListener('click', openImageModal);
+
+    // Image Modal Actions
+    cancelImageBtn.addEventListener('click', () => imageUploadModal.classList.add('hidden'));
+    confirmImageBtn.addEventListener('click', handleModalConfirm);
 
     // Handle Export
     exportBtn.addEventListener('click', exportData);
@@ -143,10 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('editCardName').textContent = card.name;
         document.getElementById('editCardId').textContent = `ID: ${card.id}`;
 
-        // Reset inputs
-        inputs.image.value = '';
-
-        // Show Image or Symbol
+        // Show Image or Symbol in Preview Box
         if (pendingUploads.has(id)) {
             // Show pending image
             const file = pendingUploads.get(id);
@@ -158,7 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
             showPreviewSymbol(card.symbol || '🎴');
         }
 
-        inputs.symbol.value = card.symbol || '';
         inputs.name.value = card.name;
         inputs.nameEn.value = card.nameEn;
         inputs.uprightKeywords.value = card.upright.keywords.join('、');
@@ -169,23 +175,83 @@ document.addEventListener('DOMContentLoaded', () => {
         editPanel.scrollTop = 0;
     }
 
-    function handleImageSelect(e) {
-        if (!e.target.files || !e.target.files[0]) return;
-        const file = e.target.files[0];
+    // --- Image Modal Logic ---
 
-        // Create local preview
-        const url = URL.createObjectURL(file);
-        showPreviewImage(url);
+    function openImageModal() {
+        if (currentCardId === null) return;
 
-        // Store file pending upload
-        pendingUploads.set(currentCardId, file);
+        // Reset Modal Inputs
+        modalInputImage.value = '';
+        modalInputSymbol.value = '';
 
-        // Update list visual immediately
+        // Populate Symbol Input if currently using symbol
         const card = cardsData.find(c => c.id === currentCardId);
-        if (card) {
-            card.itemImageDisplay = `<img src="${url}" style="width:24px;height:36px;object-fit:cover;">`;
-            renderCards(cardsData, searchInput.value);
+        if (card && !card.image && !pendingUploads.has(currentCardId)) {
+            modalInputSymbol.value = card.symbol || '';
         }
+
+        imageUploadModal.classList.remove('hidden');
+    }
+
+    function handleModalConfirm() {
+        // 1. Check for Image File
+        if (modalInputImage.files && modalInputImage.files[0]) {
+            const file = modalInputImage.files[0];
+            const url = URL.createObjectURL(file);
+
+            showPreviewImage(url);
+            pendingUploads.set(currentCardId, file);
+
+            // Update list visual
+            const card = cardsData.find(c => c.id === currentCardId);
+            if (card) {
+                card.itemImageDisplay = `<img src="${url}" style="width:24px;height:36px;object-fit:cover;">`;
+                renderCards(cardsData, searchInput.value);
+            }
+
+            // Auto save triggers
+            saveCurrentCard();
+            imageUploadModal.classList.add('hidden');
+            return;
+        }
+
+        // 2. Check for Emoji/Symbol
+        if (modalInputSymbol.value.trim()) {
+            const symbol = modalInputSymbol.value.trim();
+            showPreviewSymbol(symbol);
+
+            // Clear any pending image upload if switching back to symbol
+            if (pendingUploads.has(currentCardId)) {
+                pendingUploads.delete(currentCardId);
+                const card = cardsData.find(c => c.id === currentCardId);
+                if (card) {
+                    delete card.itemImageDisplay;
+                }
+            }
+
+            // Update local data specifically for symbol (as it's field data, not file)
+            const cardIndex = cardsData.findIndex(c => c.id === currentCardId);
+            if (cardIndex !== -1) {
+                cardsData[cardIndex].symbol = symbol;
+                // If it had an image property, we might want to unset it mentally, 
+                // but strictly speaking we only delete it if we upload a new config. 
+                // For now, let's keep it simple: Symbol update overrides image display locally.
+                // But cloud sync logic might need to know "Delete Image"? 
+                // Complexity: If user wants to revert to Emoji, we should probably nullify 'image' 
+                // in data.
+                delete cardsData[cardIndex].image; // Tentatively remove image reference
+            }
+
+            renderCards(cardsData, searchInput.value);
+            saveCurrentCard();
+            imageUploadModal.classList.add('hidden');
+            return;
+        }
+
+        // If nothing entered
+        // Just Update Symbol if it was cleared? Or do nothing?
+        // Let's assume cancel if nothing change.
+        imageUploadModal.classList.add('hidden');
     }
 
     function showPreviewImage(src) {
@@ -207,11 +273,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const splitKw = (str) => str.split(/[、,，]+/).map(k => k.trim()).filter(k => k);
 
+        // Note: We don't overwrite symbol/image here directly from main inputs anymore
+        // because they are handled via modal.
+        // We only update text fields.
+
         cardsData[cardIndex] = {
             ...cardsData[cardIndex],
             name: inputs.name.value,
             nameEn: inputs.nameEn.value,
-            symbol: inputs.symbol.value,
+            // symbol: preserved from handleModalConfirm or existing
             upright: {
                 keywords: splitKw(inputs.uprightKeywords.value),
                 desc: inputs.uprightDesc.value
@@ -221,10 +291,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 desc: inputs.reversedDesc.value
             }
         };
-
-        // Note: We don't save 'image' path here, 
-        // because it's only generated after upload.
-        // But we keep tracking via pendingUploads
 
         // UI Updates
         document.getElementById('editCardName').textContent = cardsData[cardIndex].name;
@@ -254,6 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (hasPendingImage) diffs.push('圖片更新');
                 if (card.name !== original.name) diffs.push('名稱');
                 if (card.symbol !== original.symbol) diffs.push('圖示');
+                if (card.image !== original.image) diffs.push('圖片連結變更'); // Detect reverted image
                 if (JSON.stringify(card.upright) !== JSON.stringify(original.upright)) diffs.push('正位解釋');
                 if (JSON.stringify(card.reversed) !== JSON.stringify(original.reversed)) diffs.push('逆位解釋');
 
@@ -323,7 +390,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Process uploads for checked items
-            // We iterate sequentially to avoid rate limits and logic complexity
             for (const cb of checkboxes) {
                 const id = parseInt(cb.dataset.id);
                 const modifiedCard = cardsData.find(c => c.id === id);
@@ -367,7 +433,7 @@ const TAROT_CARDS = ${JSON.stringify(finalData, null, 2)};
             reviewModal.classList.add('hidden');
             alert('🎉 更新成功！\nGitHub Pages 將在幾分鐘後自動部署新內容。\n\n您可以使用「🔍 檢查資料」按鈕來確認檔案內容。');
 
-            // Reload page to reset state and clear stale blobs
+            // Reload page
             window.location.reload();
 
         } catch (error) {
@@ -409,7 +475,6 @@ const TAROT_CARDS = ${JSON.stringify(finalData, null, 2)};
                 const reader = new FileReader();
                 reader.onload = () => {
                     const result = reader.result;
-                    // Remove "data:*/*;base64," header
                     const base64 = result.split(',')[1];
                     resolve(base64);
                 };
