@@ -2,9 +2,23 @@
 
 class TarotApp {
     constructor() {
-        this.mode = null; // 'single' or 'three'
+        this.mode = null; // 'single', 'three', or 'five'
         this.drawnCards = [];
         this.currentDrawIndex = 0;
+
+        // 定義各牌陣的標籤
+        this.modeLabels = {
+            single: ['指引'],
+            three: ['過去', '現在', '未來'],
+            five: [
+                '問題現況',
+                '外在影響',
+                '內在影響',
+                '解決建議',
+                '全能洞見'
+            ]
+        };
+
         this.initElements();
         this.initEventListeners();
         this.createStars();
@@ -20,6 +34,7 @@ class TarotApp {
         // Home screen
         this.singleModeBtn = document.getElementById('singleModeBtn');
         this.threeModeBtn = document.getElementById('threeModeBtn');
+        this.fiveModeBtn = document.getElementById('fiveModeBtn');
 
         // Draw screen
         this.backBtn = document.getElementById('backBtn');
@@ -44,6 +59,7 @@ class TarotApp {
         // Mode selection
         this.singleModeBtn.addEventListener('click', () => this.startDraw('single'));
         this.threeModeBtn.addEventListener('click', () => this.startDraw('three'));
+        this.fiveModeBtn.addEventListener('click', () => this.startDraw('five'));
 
         // Back buttons
         this.backBtn.addEventListener('click', () => this.goToHome());
@@ -74,7 +90,7 @@ class TarotApp {
     async registerServiceWorker() {
         if ('serviceWorker' in navigator) {
             try {
-                await navigator.serviceWorker.register('sw.js');
+                await navigator.serviceWorker.register('./sw.js');
                 console.log('Service Worker registered');
             } catch (error) {
                 console.log('Service Worker registration failed:', error);
@@ -95,24 +111,43 @@ class TarotApp {
         this.currentDrawIndex = 0;
     }
 
+    getCardCount(mode) {
+        switch (mode) {
+            case 'single': return 1;
+            case 'three': return 3;
+            case 'five': return 5;
+            default: return 1;
+        }
+    }
+
+    getDrawTitle(mode) {
+        switch (mode) {
+            case 'single': return '點擊卡牌抽牌';
+            case 'three': return '依序點擊三張卡牌';
+            case 'five': return '依序點擊五張卡牌';
+            default: return '點擊卡牌抽牌';
+        }
+    }
+
     startDraw(mode) {
         this.mode = mode;
         this.drawnCards = [];
         this.currentDrawIndex = 0;
 
-        const cardCount = mode === 'single' ? 1 : 3;
-        this.drawTitle.textContent = mode === 'single' ? '點擊卡牌抽牌' : '依序點擊三張卡牌';
+        const cardCount = this.getCardCount(mode);
+        const labels = this.modeLabels[mode];
+        this.drawTitle.textContent = this.getDrawTitle(mode);
 
         // Create cards
         this.cardsContainer.innerHTML = '';
-        const labels = ['過去', '現在', '未來'];
 
         for (let i = 0; i < cardCount; i++) {
-            const card = this.createCardElement(i, mode === 'three' ? labels[i] : null);
+            const card = this.createCardElement(i, mode !== 'single' ? labels[i] : null);
             this.cardsContainer.appendChild(card);
         }
 
         this.drawHint.classList.remove('hidden');
+        this.drawHint.querySelector('span:last-child').textContent = '點擊卡牌揭示命運';
         this.switchScreen(this.drawScreen);
     }
 
@@ -171,7 +206,7 @@ class TarotApp {
         this.currentDrawIndex++;
 
         // Update hint
-        const totalCards = this.mode === 'single' ? 1 : 3;
+        const totalCards = this.getCardCount(this.mode);
         if (this.currentDrawIndex < totalCards) {
             this.drawHint.querySelector('span:last-child').textContent =
                 `還剩 ${totalCards - this.currentDrawIndex} 張牌`;
@@ -195,12 +230,12 @@ class TarotApp {
     }
 
     showResult() {
-        const labels = ['過去', '現在', '未來'];
+        const labels = this.modeLabels[this.mode];
 
         // Generate result cards HTML
         this.resultCards.innerHTML = this.drawnCards.map((drawn, i) => `
             <div class="result-card ${drawn.isReversed ? 'reversed' : ''}">
-                ${this.mode === 'three' ? `<div class="card-label">${labels[i]}</div>` : ''}
+                ${this.mode !== 'single' ? `<div class="card-label">${labels[i]}</div>` : ''}
                 <div class="card-symbol">${drawn.card.symbol}</div>
                 <div class="card-name">${drawn.card.name}</div>
             </div>
@@ -212,7 +247,7 @@ class TarotApp {
             return `
                 <div class="meaning-card">
                     <div class="meaning-header">
-                        ${this.mode === 'three' ? `<span class="meaning-label">${labels[i]}</span>` : ''}
+                        ${this.mode !== 'single' ? `<span class="meaning-label">${labels[i]}</span>` : ''}
                         <span class="meaning-symbol">${drawn.card.symbol}</span>
                         <span class="meaning-name">${drawn.card.name}</span>
                         <span class="meaning-position ${drawn.isReversed ? 'reversed' : 'upright'}">
@@ -238,85 +273,97 @@ class TarotApp {
         this.showLoading(true);
 
         try {
+            // 等待字體載入
+            await document.fonts.ready;
+
             const canvas = await html2canvas(this.resultContent, {
                 backgroundColor: '#0a0a1a',
                 scale: 2,
-                useCORS: true
+                useCORS: true,
+                allowTaint: true,
+                logging: false
             });
 
-            const link = document.createElement('a');
-            link.download = `塔羅占卜結果_${new Date().toLocaleDateString('zh-TW')}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
+            // 使用 Blob 和 URL.createObjectURL 來下載
+            canvas.toBlob((blob) => {
+                if (blob) {
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `塔羅占卜結果_${new Date().toLocaleDateString('zh-TW').replace(/\//g, '-')}.png`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                    this.showLoading(false);
+                } else {
+                    throw new Error('Failed to create blob');
+                }
+            }, 'image/png');
         } catch (error) {
             console.error('Save image failed:', error);
-            alert('儲存圖片失敗，請重試');
-        } finally {
             this.showLoading(false);
+            // 備用方案：複製文字到剪貼簿
+            this.copyTextResult();
         }
+    }
+
+    copyTextResult() {
+        const text = this.generateShareText();
+        navigator.clipboard.writeText(text).then(() => {
+            alert('圖片儲存失敗，已將結果複製到剪貼簿！');
+        }).catch(() => {
+            alert('儲存失敗，請手動截圖保存');
+        });
     }
 
     async shareResult() {
-        // Check if Web Share API is supported
-        if (!navigator.share) {
-            // Fallback: save image instead
-            alert('您的瀏覽器不支援分享功能，將改為儲存圖片');
-            this.saveImage();
-            return;
-        }
+        const text = this.generateShareText();
 
-        this.showLoading(true);
-
-        try {
-            const canvas = await html2canvas(this.resultContent, {
-                backgroundColor: '#0a0a1a',
-                scale: 2,
-                useCORS: true
-            });
-
-            canvas.toBlob(async (blob) => {
-                const file = new File([blob], '塔羅占卜結果.png', { type: 'image/png' });
-
-                try {
-                    await navigator.share({
-                        title: '塔羅牌占卜結果',
-                        text: this.generateShareText(),
-                        files: [file]
-                    });
-                } catch (err) {
-                    // If file sharing fails, try text only
-                    if (err.name !== 'AbortError') {
-                        try {
-                            await navigator.share({
-                                title: '塔羅牌占卜結果',
-                                text: this.generateShareText()
-                            });
-                        } catch (e) {
-                            console.log('Share cancelled or failed');
-                        }
-                    }
+        // 檢查是否支援 Web Share API
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: '塔羅牌占卜結果',
+                    text: text
+                });
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    // 使用者取消不算錯誤
+                    this.copyToClipboard(text);
                 }
-                this.showLoading(false);
-            }, 'image/png');
-        } catch (error) {
-            console.error('Share failed:', error);
-            this.showLoading(false);
-            alert('分享失敗，請重試');
+            }
+        } else {
+            // 不支援 Web Share API，複製到剪貼簿
+            this.copyToClipboard(text);
         }
     }
 
+    copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('已複製結果到剪貼簿！您可以貼上到任何地方分享。');
+        }).catch(() => {
+            // 備用方案：顯示文字讓使用者手動複製
+            prompt('請複製以下內容分享：', text);
+        });
+    }
+
     generateShareText() {
-        const labels = ['過去', '現在', '未來'];
+        const labels = this.modeLabels[this.mode];
         let text = '🔮 我的塔羅牌占卜結果：\n\n';
 
         this.drawnCards.forEach((drawn, i) => {
-            if (this.mode === 'three') {
-                text += `【${labels[i]}】`;
+            if (this.mode !== 'single') {
+                text += `【${labels[i]}】\n`;
             }
             text += `${drawn.card.symbol} ${drawn.card.name} (${drawn.isReversed ? '逆位' : '正位'})\n`;
+            if (this.mode !== 'single') {
+                text += '\n';
+            }
         });
 
         text += '\n✨ 來自「塔羅牌占卜」App';
+        text += '\n🔗 https://kamiyu94.github.io/fortune-teller/';
         return text;
     }
 }

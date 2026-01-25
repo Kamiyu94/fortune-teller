@@ -232,21 +232,22 @@ body {
 .draw-content {
     text-align: center;
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
 }
 
 .draw-title {
     font-size: 1.5rem;
     color: var(--accent-gold);
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 .cards-container {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     margin-bottom: 30px;
     flex-wrap: wrap;
+    max-width: 100%;
 }
 
 /* Tarot Card */
@@ -631,27 +632,83 @@ body {
 }
 
 /* Responsive */
+@media (max-width: 600px) {
+    .tarot-card {
+        width: 90px;
+        height: 135px;
+    }
+
+    .card-symbol {
+        font-size: 1.5rem;
+    }
+
+    .card-name {
+        font-size: 0.85rem;
+    }
+
+    .card-name-en {
+        font-size: 0.6rem;
+    }
+
+    .result-card {
+        width: 70px;
+        padding: 10px 6px;
+    }
+
+    .result-card .card-symbol {
+        font-size: 1.5rem;
+    }
+
+    .result-card .card-name {
+        font-size: 0.75rem;
+    }
+}
+
 @media (max-width: 400px) {
     .logo h1 {
         font-size: 2rem;
     }
 
     .tarot-card {
-        width: 100px;
-        height: 150px;
+        width: 70px;
+        height: 105px;
+    }
+
+    .card-symbol {
+        font-size: 1.2rem;
+    }
+
+    .card-label {
+        font-size: 0.6rem;
+    }
+
+    .card-name {
+        font-size: 0.7rem;
+    }
+
+    .card-name-en {
+        display: none;
     }
 
     .result-card {
-        width: 85px;
-        padding: 12px 8px;
+        width: 60px;
+        padding: 8px 4px;
     }
 
     .result-card .card-name {
-        font-size: 0.8rem;
+        font-size: 0.65rem;
+    }
+
+    .result-card .card-symbol {
+        font-size: 1.2rem;
     }
 
     .action-btn {
         padding: 10px 15px;
         font-size: 0.85rem;
+    }
+
+    .meaning-header {
+        flex-wrap: wrap;
     }
 }
