@@ -261,7 +261,7 @@ class TarotApp {
                         <span class="meaning-symbol">${visual}</span>
                         <span class="meaning-name">${drawn.card.name}</span>
                         <span class="meaning-position ${drawn.isReversed ? 'reversed' : 'upright'}">
-                            ${drawn.isReversed ? '??' : '??'}
+                            ${drawn.isReversed ? '逆位' : '正位'}
                         </span>
                     </div>
                     <div class="meaning-keywords">
