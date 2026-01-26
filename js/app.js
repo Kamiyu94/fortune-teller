@@ -1,20 +1,20 @@
-// 塔?????App - 主??
+// 塔羅占卜 App - 主程式
 const TEACHER_LINE_URL = "https://line.me/R/ti/p/@nuw5707v";
 class TarotApp {
     constructor() {
         this.mode = null; // 'single', 'three', or 'five'
         this.drawnCards = [];
         this.currentDrawIndex = 0;
-        // 定義?????標籤
+        // 定義牌陣標籤
         this.modeLabels = {
-            single: ['??'],
-            three: ['?去', '?在', '??'],
+            single: ['占卜結果'],
+            three: ['過去', '現在', '未來'],
             five: [
-                '????',
+                '問題現況',
                 '外在影響',
-                '?在影響',
-                '?建議',
-                '?能洞?'
+                '內在影響',
+                '解決建議',
+                '全能洞見'
             ]
         };
         this.initElements();
@@ -141,10 +141,10 @@ class TarotApp {
     }
     getDrawTitle(mode) {
         switch (mode) {
-            case 'single': return '點?????';
-            case 'three': return '依?點?三張??';
-            case 'five': return '依?點?五張??';
-            default: return '點?????';
+            case 'single': return '點擊卡牌抽牌';
+            case 'three': return '依序點擊三張卡牌';
+            case 'five': return '依序點擊五張卡牌';
+            default: return '點擊卡牌抽牌';
         }
     }
     startDraw(mode) {
@@ -161,7 +161,7 @@ class TarotApp {
             this.cardsContainer.appendChild(card);
         }
         this.drawHint.classList.remove('hidden');
-        this.drawHint.querySelector('span:last-child').textContent = '點????示??';
+        this.drawHint.querySelector('span:last-child').textContent = '點擊卡牌揭示命運';
         this.switchScreen(this.drawScreen);
     }
     createCardElement(index, label) {
@@ -204,7 +204,7 @@ class TarotApp {
         cardFront.querySelector('.card-name').textContent = drawnCard.card.name;
         cardFront.querySelector('.card-name-en').textContent = drawnCard.card.nameEn;
         const positionEl = cardFront.querySelector('.card-position');
-        positionEl.textContent = drawnCard.isReversed ? '??' : '??';
+        positionEl.textContent = drawnCard.isReversed ? '逆位' : '正位';
         positionEl.className = `card-position ${drawnCard.isReversed ? 'reversed' : 'upright'}`;
         // Flip animation
         if (drawnCard.isReversed) {
@@ -218,7 +218,7 @@ class TarotApp {
         const totalCards = this.getCardCount(this.mode);
         if (this.currentDrawIndex < totalCards) {
             this.drawHint.querySelector('span:last-child').textContent =
-                `?剩 ${totalCards - this.currentDrawIndex} 張?`;
+                `還剩 ${totalCards - this.currentDrawIndex} 張牌`;
         } else {
             this.drawHint.classList.add('hidden');
             // Show result after a delay
@@ -280,15 +280,15 @@ class TarotApp {
         if (existingBtn) existingBtn.remove();
         // Load Config
         const siteConfig = JSON.parse(localStorage.getItem('siteConfig')) || {};
-        // ? CLIENT SPECIFIC URL (Hardcoded for Demo)
+        // 客戶端特定 URL
         const DEFAULT_DEMO_URL = "https://line.me/R/ti/p/@nuw5707v";
         const targetUrl = siteConfig.lineUrl || DEFAULT_DEMO_URL;
         const ctaContainer = document.createElement('div');
         ctaContainer.className = 'floating-cta';
         ctaContainer.innerHTML = `
             <button class="line-floating-btn" onclick="window.open('${targetUrl}', '_blank')">
-                <span class="line-icon">?</span>
-                <span class="line-text">詢??師</span>
+                <span class="line-icon">💬</span>
+                <span class="line-text">詢問老師</span>
             </button>
         `;
         document.body.appendChild(ctaContainer);
@@ -325,7 +325,7 @@ class TarotApp {
                     const url = URL.createObjectURL(blob);
                     const link = document.createElement('a');
                     link.href = url;
-                    link.download = `塔???結?_${new Date().toLocaleDateString('zh-TW').replace(/\//g, '-')}.png`;
+                    link.download = `塔羅牌結果_${new Date().toLocaleDateString('zh-TW').replace(/\//g, '-')}.png`;
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
@@ -347,53 +347,53 @@ class TarotApp {
     copyTextResult() {
         const text = this.generateShareText();
         navigator.clipboard.writeText(text).then(() => {
-            alert('????失?，已將???製到?貼簿?');
+            alert('分享失敗，已將結果複製到剪貼簿');
         }).catch(() => {
-            alert('??失?，?????保?');
+            alert('複製失敗，請手動複製');
         });
     }
     async shareResult() {
         const text = this.generateShareText();
-        // 檢查?否?援 Web Share API
+        // 檢查是否支援 Web Share API
         if (navigator.share) {
             try {
                 await navigator.share({
-                    title: '塔???????,
+                    title: '塔羅牌占卜結果',
                     text: text
                 });
             } catch (err) {
                 if (err.name !== 'AbortError') {
-                    // 使用??消?算錯?
+                    // 使用複製到剪貼簿作為備案
                     this.copyToClipboard(text);
                 }
             }
         } else {
-            // 不支??Web Share API，?製到?貼?
+            // 不支援 Web Share API，複製到剪貼簿
             this.copyToClipboard(text);
         }
     }
     copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
-            alert('已?製??到?貼簿??可以貼上到任??方?享??);
+            alert('已複製結果到剪貼簿，可以貼上到任何地方分享');
         }).catch(() => {
-                // ?用??：顯示?字?使用?????
-                prompt('請?製以下內容?享?', text);
-            });
+            // 備用方案：顯示文字框供使用者複製
+            prompt('請複製以下內容分享', text);
+        });
     }
     generateShareText() {
         const labels = this.modeLabels[this.mode];
-        let text = '? ??塔???????\n\n';
+        let text = '🔮 我的塔羅牌占卜結果：\n\n';
         this.drawnCards.forEach((drawn, i) => {
             if (this.mode !== 'single') {
-                text += `??{labels[i]}?\n`;
+                text += `【${labels[i]}】\n`;
             }
-            text += `${drawn.card.symbol} ${drawn.card.name} (${drawn.isReversed ? '??' : '??'})\n`;
+            text += `${drawn.card.symbol} ${drawn.card.name} (${drawn.isReversed ? '逆位' : '正位'})\n`;
             if (this.mode !== 'single') {
                 text += '\n';
             }
         });
-        text += '\n??來自??羅????App';
-        text += '\n?? https://kamiyu94.github.io/fortune-teller/';
+        text += '\n✨ 來自「塔羅牌占卜」App';
+        text += '\n🔗 https://kamiyu94.github.io/fortune-teller/';
         return text;
     }
 }
@@ -409,7 +409,7 @@ window.addEventListener('load', function () {
     const params = new URLSearchParams(window.location.search);
     const debugId = params.get('debug_card');
     if (debugId !== null) {
-        console.log("?? Debug Mode Active for Card ID:", debugId);
+        console.log("Debug Mode Active for Card ID:", debugId);
         // 1. Force Screen Switch
         const homeScreen = document.getElementById('homeScreen');
         const drawScreen = document.getElementById('drawScreen');
@@ -438,7 +438,7 @@ window.addEventListener('load', function () {
                 { card: getRandomCard(), isReversed: false }
             ];
             // 4. Define 5-card spread labels
-            const labels = ['????', '外在影響', '?? ?覽', '?建議', '?能洞?'];
+            const labels = ['問題現況', '外在影響', '🔍 預覽', '解決建議', '全能洞見'];
             // 5. Render Result Cards (same format as real game)
             const resultCards = document.getElementById('resultCards');
             if (resultCards) {
@@ -458,7 +458,7 @@ window.addEventListener('load', function () {
             // 6. Update Page Title
             const resultTitle = document.querySelector('.result-title');
             if (resultTitle) {
-                resultTitle.textContent = '?? 五?????- ' + debugCard.name;
+                resultTitle.textContent = '🔍 五牌陣預覽 - ' + debugCard.name;
             }
             // 7. Hide Meanings Section
             const resultMeanings = document.getElementById('resultMeanings');
@@ -468,7 +468,7 @@ window.addEventListener('load', function () {
             // 8. Update Action Buttons
             const redrawBtn = document.getElementById('redrawBtn');
             if (redrawBtn) {
-                redrawBtn.textContent = '?? ?新?覽';
+                redrawBtn.textContent = '🔄 重新預覽';
                 redrawBtn.onclick = function () {
                     window.location.reload();
                 };
