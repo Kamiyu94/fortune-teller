@@ -1,4 +1,4 @@
-// 塔羅牌占卜 App - 主程式
+// 塔�??��???App - 主�?�?
 const TEACHER_LINE_URL = "https://line.me/R/ti/p/@nuw5707v";
 
 class TarotApp {
@@ -7,16 +7,16 @@ class TarotApp {
         this.drawnCards = [];
         this.currentDrawIndex = 0;
 
-        // 定義各牌陣的標籤
+        // 定義?��????標籤
         this.modeLabels = {
-            single: ['指引'],
-            three: ['過去', '現在', '未來'],
+            single: ['?��?'],
+            three: ['?�去', '?�在', '?��?'],
             five: [
-                '問題現況',
+                '?��??��?',
                 '外在影響',
-                '內在影響',
-                '解決建議',
-                '全能洞見'
+                '?�在影響',
+                '�?��建議',
+                '?�能洞�?'
             ]
         };
 
@@ -135,7 +135,7 @@ class TarotApp {
         [this.homeScreen, this.drawScreen, this.resultScreen].forEach(screen => {
             screen.classList.remove('active');
         });
-        target.classList.add('active');
+        target.classList.add('active'); window.scrollTo(0, 0); setTimeout(() => window.scrollTo(0, 0), 50);
     }
 
     goToHome() {
@@ -164,10 +164,10 @@ class TarotApp {
 
     getDrawTitle(mode) {
         switch (mode) {
-            case 'single': return '點擊卡牌抽牌';
-            case 'three': return '依序點擊三張卡牌';
-            case 'five': return '依序點擊五張卡牌';
-            default: return '點擊卡牌抽牌';
+            case 'single': return '點�??��??��?';
+            case 'three': return '依�?點�?三張?��?';
+            case 'five': return '依�?點�?五張?��?';
+            default: return '點�??��??��?';
         }
     }
 
@@ -189,7 +189,7 @@ class TarotApp {
         }
 
         this.drawHint.classList.remove('hidden');
-        this.drawHint.querySelector('span:last-child').textContent = '點擊卡牌揭示命運';
+        this.drawHint.querySelector('span:last-child').textContent = '點�??��??�示?��?';
         this.switchScreen(this.drawScreen);
     }
 
@@ -234,13 +234,13 @@ class TarotApp {
         if (drawnCard.card.image) {
             symbolEl.innerHTML = `<img src="${drawnCard.card.image}" class="tarot-img" alt="${drawnCard.card.name}">`;
         } else {
-            symbolEl.textContent = drawnCard.card.symbol || '🎴';
+            symbolEl.textContent = drawnCard.card.symbol || '?��';
         }
         cardFront.querySelector('.card-name').textContent = drawnCard.card.name;
         cardFront.querySelector('.card-name-en').textContent = drawnCard.card.nameEn;
 
         const positionEl = cardFront.querySelector('.card-position');
-        positionEl.textContent = drawnCard.isReversed ? '逆位' : '正位';
+        positionEl.textContent = drawnCard.isReversed ? '?��?' : '�??';
         positionEl.className = `card-position ${drawnCard.isReversed ? 'reversed' : 'upright'}`;
 
         // Flip animation
@@ -257,7 +257,7 @@ class TarotApp {
         const totalCards = this.getCardCount(this.mode);
         if (this.currentDrawIndex < totalCards) {
             this.drawHint.querySelector('span:last-child').textContent =
-                `還剩 ${totalCards - this.currentDrawIndex} 張牌`;
+                `?�剩 ${totalCards - this.currentDrawIndex} 張�?`;
         } else {
             this.drawHint.classList.add('hidden');
             // Show result after a delay
@@ -308,7 +308,7 @@ class TarotApp {
                         <span class="meaning-symbol">${visual}</span>
                         <span class="meaning-name">${drawn.card.name}</span>
                         <span class="meaning-position ${drawn.isReversed ? 'reversed' : 'upright'}">
-                            ${drawn.isReversed ? '逆位' : '正位'}
+                            ${drawn.isReversed ? '?��?' : '�??'}
                         </span>
                     </div>
                     <div class="meaning-keywords">
@@ -331,7 +331,7 @@ class TarotApp {
 
         // Load Config
         const siteConfig = JSON.parse(localStorage.getItem('siteConfig')) || {};
-        // 🔥 CLIENT SPECIFIC URL (Hardcoded for Demo)
+        // ?�� CLIENT SPECIFIC URL (Hardcoded for Demo)
         const DEFAULT_DEMO_URL = "https://line.me/R/ti/p/@nuw5707v";
         const targetUrl = siteConfig.lineUrl || DEFAULT_DEMO_URL;
 
@@ -339,8 +339,8 @@ class TarotApp {
         ctaContainer.className = 'floating-cta';
         ctaContainer.innerHTML = `
             <button class="line-floating-btn" onclick="window.open('${targetUrl}', '_blank')">
-                <span class="line-icon">💬</span>
-                <span class="line-text">詢問老師</span>
+                <span class="line-icon">?��</span>
+                <span class="line-text">詢�??�師</span>
             </button>
         `;
         document.body.appendChild(ctaContainer);
@@ -386,7 +386,7 @@ class TarotApp {
                     const url = URL.createObjectURL(blob);
                     const link = document.createElement('a');
                     link.href = url;
-                    link.download = `塔羅占卜結果_${new Date().toLocaleDateString('zh-TW').replace(/\//g, '-')}.png`;
+                    link.download = `塔�??��?結�?_${new Date().toLocaleDateString('zh-TW').replace(/\//g, '-')}.png`;
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
@@ -410,59 +410,59 @@ class TarotApp {
     copyTextResult() {
         const text = this.generateShareText();
         navigator.clipboard.writeText(text).then(() => {
-            alert('圖片儲存失敗，已將結果複製到剪貼簿！');
+            alert('?��??��?失�?，已將�??��?製到?�貼簿�?');
         }).catch(() => {
-            alert('儲存失敗，請手動截圖保存');
+            alert('?��?失�?，�??��??��?保�?');
         });
     }
 
     async shareResult() {
         const text = this.generateShareText();
 
-        // 檢查是否支援 Web Share API
+        // 檢查?�否?�援 Web Share API
         if (navigator.share) {
             try {
                 await navigator.share({
-                    title: '塔羅牌占卜結果',
+                    title: '塔�??��??��???,
                     text: text
                 });
             } catch (err) {
                 if (err.name !== 'AbortError') {
-                    // 使用者取消不算錯誤
+                    // 使用?��?消�?算錯�?
                     this.copyToClipboard(text);
                 }
             }
         } else {
-            // 不支援 Web Share API，複製到剪貼簿
+            // 不支??Web Share API，�?製到?�貼�?
             this.copyToClipboard(text);
         }
     }
 
     copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(() => {
-            alert('已複製結果到剪貼簿！您可以貼上到任何地方分享。');
+            alert('已�?製�??�到?�貼簿�??�可以貼上到任�??�方?�享??);
         }).catch(() => {
-            // 備用方案：顯示文字讓使用者手動複製
-            prompt('請複製以下內容分享：', text);
+            // ?�用?��?：顯示�?字�?使用?��??��?�?
+            prompt('請�?製以下內容�?享�?', text);
         });
     }
 
     generateShareText() {
         const labels = this.modeLabels[this.mode];
-        let text = '🔮 我的塔羅牌占卜結果：\n\n';
+        let text = '?�� ?��?塔�??��??��??��?\n\n';
 
         this.drawnCards.forEach((drawn, i) => {
             if (this.mode !== 'single') {
-                text += `【${labels[i]}】\n`;
+                text += `??{labels[i]}?�\n`;
             }
-            text += `${drawn.card.symbol} ${drawn.card.name} (${drawn.isReversed ? '逆位' : '正位'})\n`;
+            text += `${drawn.card.symbol} ${drawn.card.name} (${drawn.isReversed ? '?��?' : '�??'})\n`;
             if (this.mode !== 'single') {
                 text += '\n';
             }
         });
 
-        text += '\n✨ 來自「塔羅牌占卜」App';
-        text += '\n🔗 https://kamiyu94.github.io/fortune-teller/';
+        text += '\n??來自?��?羅�??��??�App';
+        text += '\n?? https://kamiyu94.github.io/fortune-teller/';
         return text;
     }
 }
@@ -481,7 +481,7 @@ window.addEventListener('load', function () {
     const debugId = params.get('debug_card');
 
     if (debugId !== null) {
-        console.log("🔍 Debug Mode Active for Card ID:", debugId);
+        console.log("?? Debug Mode Active for Card ID:", debugId);
 
         // 1. Force Screen Switch
         const homeScreen = document.getElementById('homeScreen');
@@ -517,7 +517,7 @@ window.addEventListener('load', function () {
             ];
 
             // 4. Define 5-card spread labels
-            const labels = ['問題現況', '外在影響', '🔍 預覽', '解決建議', '全能洞見'];
+            const labels = ['?��??��?', '外在影響', '?? ?�覽', '�?��建議', '?�能洞�?'];
 
             // 5. Render Result Cards (same format as real game)
             const resultCards = document.getElementById('resultCards');
@@ -526,7 +526,7 @@ window.addEventListener('load', function () {
                     const isDebugCard = i === 2;
                     const visual = drawn.card.image
                         ? `<img src="${drawn.card.image}" class="tarot-img result-img" alt="${drawn.card.name}">`
-                        : `<span>${drawn.card.symbol || '🎴'}</span>`;
+                        : `<span>${drawn.card.symbol || '?��'}</span>`;
 
                     return `
                     <div class="result-card ${drawn.isReversed ? 'reversed' : ''}" ${isDebugCard ? 'style="border-color: #e91e63; box-shadow: 0 0 15px rgba(233, 30, 99, 0.5);"' : ''}>
@@ -540,7 +540,7 @@ window.addEventListener('load', function () {
             // 6. Update Page Title
             const resultTitle = document.querySelector('.result-title');
             if (resultTitle) {
-                resultTitle.textContent = '🔍 五牌陣預覽 - ' + debugCard.name;
+                resultTitle.textContent = '?? 五�????�?- ' + debugCard.name;
             }
 
             // 7. Hide Meanings Section
@@ -552,7 +552,7 @@ window.addEventListener('load', function () {
             // 8. Update Action Buttons
             const redrawBtn = document.getElementById('redrawBtn');
             if (redrawBtn) {
-                redrawBtn.textContent = '🔄 重新預覽';
+                redrawBtn.textContent = '?? ?�新?�覽';
                 redrawBtn.onclick = function () {
                     window.location.reload();
                 };
