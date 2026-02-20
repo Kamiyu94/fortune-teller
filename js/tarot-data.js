@@ -1051,7 +1051,8 @@ const TAROT_CARDS = [
         "逃避"
       ],
       "desc": "可能害怕改變或不確定是否該離開。傾聽內心的真正渴望。"
-    }
+    },
+    "image": "images/cards/card_43.png"
   },
   {
     "id": 44,
