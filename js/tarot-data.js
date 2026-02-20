@@ -787,7 +787,8 @@ const TAROT_CARDS = [
         "不成熟"
       ],
       "desc": "可能缺乏方向感或熱情消退。重新找回你的激情和目標。"
-    }
+    },
+    "image": "images/cards/card_32.png"
   },
   {
     "id": 33,
@@ -883,7 +884,8 @@ const TAROT_CARDS = [
         "失望"
       ],
       "desc": "可能壓抑情感或感到情緒空虛。釋放你的感受，允許愛流動。"
-    }
+    },
+    "image": "images/cards/card_36.png"
   },
   {
     "id": 37,
@@ -907,7 +909,8 @@ const TAROT_CARDS = [
         "破裂的關係"
       ],
       "desc": "關係中出現不平衡或衝突。需要溝通和重新建立連結。"
-    }
+    },
+    "image": "images/cards/card_37.png"
   },
   {
     "id": 38,
@@ -931,7 +934,8 @@ const TAROT_CARDS = [
         "社交疲勞"
       ],
       "desc": "可能感到被排斥或社交過度。在社交與獨處間找到平衡。"
-    }
+    },
+    "image": "images/cards/card_38.png"
   },
   {
     "id": 39,
@@ -955,7 +959,8 @@ const TAROT_CARDS = [
         "新視角"
       ],
       "desc": "從冷漠中覺醒，準備好接受新的可能性。走出舒適區。"
-    }
+    },
+    "image": "images/cards/card_39.png"
   },
   {
     "id": 40,
@@ -979,7 +984,8 @@ const TAROT_CARDS = [
         "原諒"
       ],
       "desc": "開始接受失去並向前看。療癒正在發生，放下過去的遺憾。"
-    }
+    },
+    "image": "images/cards/card_40.png"
   },
   {
     "id": 41,
