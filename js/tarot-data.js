@@ -1075,7 +1075,8 @@ const TAROT_CARDS = [
         "願望落空"
       ],
       "desc": "可能得到想要的卻仍感到空虛。真正的滿足來自內心。"
-    }
+    },
+    "image": "images/cards/card_44.png"
   },
   {
     "id": 45,
