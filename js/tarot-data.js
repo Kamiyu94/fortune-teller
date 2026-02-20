@@ -1003,7 +1003,8 @@ const TAROT_CARDS = [
         "向前看"
       ],
       "desc": "過度沉溺於過去可能阻礙前進。珍惜回憶但要活在當下。"
-    }
+    },
+    "image": "images/cards/card_41.png"
   },
   {
     "id": 42,
@@ -1027,7 +1028,8 @@ const TAROT_CARDS = [
         "專注"
       ],
       "desc": "迷霧散去，能夠更清楚地看待選擇。是時候做出決定了。"
-    }
+    },
+    "image": "images/cards/card_42.png"
   },
   {
     "id": 43,
