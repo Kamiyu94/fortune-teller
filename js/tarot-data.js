@@ -1099,7 +1099,8 @@ const TAROT_CARDS = [
         "分離"
       ],
       "desc": "家庭關係中可能存在問題。努力修復連結，調整期望。"
-    }
+    },
+    "image": "images/cards/card_45.png"
   },
   {
     "id": 46,
