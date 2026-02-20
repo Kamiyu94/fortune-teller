@@ -1136,7 +1136,8 @@ const TAROT_CARDS = [
         "幻想"
       ],
       "desc": "可能過於情緒化或沉溺幻想。培養情緒成熟度。"
-    }
+    },
+    "image": "images/cards/card_46.png"
   },
   {
     "id": 47,
@@ -1160,7 +1161,8 @@ const TAROT_CARDS = [
         "欺騙"
       ],
       "desc": "可能過於理想化或遭遇情感上的失望。保持現實。"
-    }
+    },
+    "image": "images/cards/card_47.png"
   },
   {
     "id": 48,
@@ -1184,7 +1186,8 @@ const TAROT_CARDS = [
         "依賴"
       ],
       "desc": "可能情緒過於敏感或與他人界限不清。保護你的能量。"
-    }
+    },
+    "image": "images/cards/card_48.png"
   },
   {
     "id": 49,
@@ -1208,7 +1211,8 @@ const TAROT_CARDS = [
         "冷漠"
       ],
       "desc": "可能壓抑情感或利用情緒操控他人。尋求內在平衡。"
-    }
+    },
+    "image": "images/cards/card_49.png"
   },
   {
     "id": 50,
