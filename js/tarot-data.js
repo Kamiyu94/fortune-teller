@@ -979,7 +979,8 @@ const TAROT_CARDS = [
         "原諒"
       ],
       "desc": "開始接受失去並向前看。療癒正在發生，放下過去的遺憾。"
-    }
+    },
+    "image": "images/cards/card_40.png"
   },
   {
     "id": 41,
@@ -1003,7 +1004,8 @@ const TAROT_CARDS = [
         "向前看"
       ],
       "desc": "過度沉溺於過去可能阻礙前進。珍惜回憶但要活在當下。"
-    }
+    },
+    "image": "images/cards/card_41.png"
   },
   {
     "id": 42,
