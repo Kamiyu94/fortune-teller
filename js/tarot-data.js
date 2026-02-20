@@ -812,7 +812,8 @@ const TAROT_CARDS = [
         "挫折"
       ],
       "desc": "可能過於衝動或遭遇阻礙。在行動前多加思考。"
-    }
+    },
+    "image": "images/cards/card_33.png"
   },
   {
     "id": 34,
@@ -836,7 +837,8 @@ const TAROT_CARDS = [
         "情緒化"
       ],
       "desc": "可能缺乏自信或過於強勢。找回內在的平衡和穩定。"
-    }
+    },
+    "image": "images/cards/card_34.png"
   },
   {
     "id": 35,
@@ -860,7 +862,8 @@ const TAROT_CARDS = [
         "高期望"
       ],
       "desc": "可能過於專制或期望過高。學會傾聽他人，保持謙遜。"
-    }
+    },
+    "image": "images/cards/card_35.png"
   },
   {
     "id": 36,
