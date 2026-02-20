@@ -1003,8 +1003,7 @@ const TAROT_CARDS = [
         "向前看"
       ],
       "desc": "過度沉溺於過去可能阻礙前進。珍惜回憶但要活在當下。"
-    },
-    "image": "images/cards/card_41.png"
+    }
   },
   {
     "id": 42,
