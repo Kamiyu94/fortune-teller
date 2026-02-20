@@ -979,8 +979,7 @@ const TAROT_CARDS = [
         "原諒"
       ],
       "desc": "開始接受失去並向前看。療癒正在發生，放下過去的遺憾。"
-    },
-    "image": "images/cards/card_40.png"
+    }
   },
   {
     "id": 41,
