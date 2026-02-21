@@ -622,7 +622,8 @@ const TAROT_CARDS = [
         "過渡期"
       ],
       "desc": "可能感到不穩定或慶祝被延遲。專注於建立穩固的基礎。"
-    }
+    },
+    "image": "images/cards/card_25.png"
   },
   {
     "id": 26,
@@ -646,7 +647,8 @@ const TAROT_CARDS = [
         "協調"
       ],
       "desc": "衝突正在緩解，或你在逃避必要的對抗。尋找建設性的方式解決分歧。"
-    }
+    },
+    "image": "images/cards/card_26.png"
   },
   {
     "id": 27,
@@ -670,7 +672,8 @@ const TAROT_CARDS = [
         "傲慢"
       ],
       "desc": "可能遭遇挫折或未獲得預期的認可。保持謙虛，從失敗中學習。"
-    }
+    },
+    "image": "images/cards/card_27.png"
   },
   {
     "id": 28,
@@ -694,7 +697,8 @@ const TAROT_CARDS = [
         "疲憊"
       ],
       "desc": "可能感到被壓垮或想要放棄。評估這場戰鬥是否值得繼續。"
-    }
+    },
+    "image": "images/cards/card_28.png"
   },
   {
     "id": 29,
