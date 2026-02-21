@@ -722,7 +722,8 @@ const TAROT_CARDS = [
         "失去動力"
       ],
       "desc": "進展受阻或溝通出現問題。保持耐心，重新調整節奏。"
-    }
+    },
+    "image": "images/cards/card_29.png"
   },
   {
     "id": 30,
@@ -746,7 +747,8 @@ const TAROT_CARDS = [
         "頑固"
       ],
       "desc": "可能過度防備或筋疲力盡。知道何時該休息，何時該尋求幫助。"
-    }
+    },
+    "image": "images/cards/card_30.png"
   },
   {
     "id": 31,
@@ -770,7 +772,8 @@ const TAROT_CARDS = [
         "燃燒殆盡"
       ],
       "desc": "即將釋放壓力，或學會拒絕不必要的負擔。不要讓責任壓垮你。"
-    }
+    },
+    "image": "images/cards/card_31.png"
   },
   {
     "id": 32,
