@@ -547,7 +547,8 @@ const TAROT_CARDS = [
         "創造力受阻"
       ],
       "desc": "可能感到缺乏動力或靈感。重新點燃你的熱情，不要讓機會溜走。"
-    }
+    },
+    "image": "images/cards/card_22.png"
   },
   {
     "id": 23,
@@ -571,7 +572,8 @@ const TAROT_CARDS = [
         "意外"
       ],
       "desc": "可能害怕做出選擇或缺乏遠見。不要讓恐懼阻止你前進。"
-    }
+    },
+    "image": "images/cards/card_23.png"
   },
   {
     "id": 24,
@@ -595,7 +597,8 @@ const TAROT_CARDS = [
         "障礙"
       ],
       "desc": "可能遇到阻礙或計劃延遲。保持耐心，重新評估你的策略。"
-    }
+    },
+    "image": "images/cards/card_24.png"
   },
   {
     "id": 25,
