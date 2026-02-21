@@ -1246,7 +1246,8 @@ const TAROT_CARDS = [
         "錯誤判斷"
       ],
       "desc": "思維混亂或溝通出現問題。在做決定前尋求更多資訊。"
-    }
+    },
+    "image": "images/cards/card_50.png"
   },
   {
     "id": 51,
@@ -1270,7 +1271,8 @@ const TAROT_CARDS = [
         "真相揭露"
       ],
       "desc": "僵局被打破，準備好面對一直逃避的事情。"
-    }
+    },
+    "image": "images/cards/card_51.png"
   },
   {
     "id": 52,
@@ -1294,7 +1296,8 @@ const TAROT_CARDS = [
         "前進"
       ],
       "desc": "從心痛中恢復，開始療癒的過程。釋放過去的傷痛。"
-    }
+    },
+    "image": "images/cards/card_52.png"
   },
   {
     "id": 53,
