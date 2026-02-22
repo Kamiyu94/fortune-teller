@@ -48,7 +48,7 @@ const TAROT_CARDS = [
       ],
       "desc": "你可能有自己不曾注意到的雙重意圖，或是你沒有充分發揮潛力，需要重新審視你的意圖和方法。"
     },
-    "image": "images/cards/card_1.jpg"
+    "image": "images/cards/card_1.png"
   },
   {
     "id": 2,
